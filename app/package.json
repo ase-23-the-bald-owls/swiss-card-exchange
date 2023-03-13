@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "npm run eslint && npm run format",
+    "lint-check": "npm run eslint-check && npm run format-check",
+    "eslint": "eslint '**/*.{js,jsx,ts,tsx}'",
+    "eslint-check": "eslint --no-fix '**/*.{js,jsx,ts,tsx}'",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
+    "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'"
   },
   "dependencies": {
     "next": "13.2.4",
@@ -19,6 +24,7 @@
     "@types/react-dom": "18.0.11",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "prettier": "2.8.4",
     "typescript": "4.9.5"
   }
 }
