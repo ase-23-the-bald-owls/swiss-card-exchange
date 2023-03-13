@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "npm run eslint && npm run format",
     "lint-check": "npm run eslint-check && npm run format-check",
-    "eslint": "eslint '**/*.{js,jsx,ts,tsx}'",
-    "eslint-check": "eslint --no-fix '**/*.{js,jsx,ts,tsx}'",
+    "eslint": "eslint '**/*.{js,jsx,ts,tsx}' && tsc",
+    "eslint-check": "eslint --no-fix '**/*.{js,jsx,ts,tsx}' && tsc",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
     "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'"
   },
