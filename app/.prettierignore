@@ -1,2 +1,5 @@
 /.next
+/.nyc_output
+/cypress-coverage
+/cypress/videos
 /node_modules

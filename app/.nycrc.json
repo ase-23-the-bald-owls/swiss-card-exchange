@@ -1,0 +1,9 @@
+{
+  "extension": [".js", ".jsx", ".ts", ".tsx"],
+  "include": ["src/components/**/*", "src/pages/**/*"],
+  "all": true,
+  "sourceMap": true,
+  "instrument": true,
+  "report-dir": "cypress-coverage",
+  "reporter": ["json", "lcov", "text-summary"]
+}
