@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "supabase": "supabase",
+    "update-types": "dotenv -e .env.local -- sh -c 'supabase gen types typescript --db-url $DB_URL > src/lib/database.types.ts'",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -17,6 +19,10 @@
     "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'"
   },
   "dependencies": {
+    "@supabase/auth-helpers-nextjs": "0.5.6",
+    "@supabase/auth-helpers-react": "0.3.1",
+    "@supabase/auth-ui-react": "0.3.5",
+    "@supabase/supabase-js": "2.10.0",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -33,12 +39,15 @@
     "@typescript-eslint/parser": "5.15.0",
     "babel-plugin-istanbul": "6.1.1",
     "cypress": "12.7.0",
+    "dotenv": "16.0.3",
+    "dotenv-cli": "7.1.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-prettier": "4.0.0",
     "nyc": "15.1.0",
     "prettier": "2.8.4",
+    "supabase": "1.42.5",
     "typescript": "4.9.5"
   }
 }

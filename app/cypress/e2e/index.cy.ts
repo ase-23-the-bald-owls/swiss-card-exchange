@@ -1,7 +1,7 @@
-export {}; // Next.js requires --isolatedModules in tsconfig to be true. Feel free to remove this if you have an import
-
+import products from '../fixtures/products.json';
 describe('landing', () => {
   it('should render', () => {
+    cy.intercept('GET', 'localhost:54321/*', products);
     cy.visitAndWaitFor('/', 'index');
   });
 });

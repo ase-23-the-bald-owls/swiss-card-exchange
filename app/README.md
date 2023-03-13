@@ -5,11 +5,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+# start supabase
+npm run supabase start
+
+# you find supabase on http://localhost:54323
+cp .env.example .env.local
+# add the anon key of the output of the supabase start command into .env.local
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
