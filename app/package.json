@@ -8,6 +8,7 @@
     "start": "next start",
     "cypress": "cypress open",
     "cypress-run": "cypress run",
+    "cypress-run-components": "cypress run --component",
     "lint": "npm run eslint && npm run format",
     "lint-check": "npm run eslint-check && npm run format-check",
     "eslint": "eslint '**/*.{js,jsx,ts,tsx}' && tsc",
