@@ -56,7 +56,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Cache Docker images.
+        uses: ScribeMD/docker-cache@0.3.0
+        with:
+          key: docker-${{ runner.os }}
+
+      - name: Copy .env file
+        run: cp .env.example .env.local
+        working-directory: app
+
       - run: npm ci
+        working-directory: app
+
+      - name: Supabase start
+        run: npm run supabase start
         working-directory: app
 
       - run: npm run build
