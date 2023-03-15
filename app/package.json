@@ -3,20 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "supabase": "supabase",
-    "update-types": "dotenv -e .env.local -- sh -c 'supabase gen types typescript --db-url $DB_URL > src/lib/database.types.ts'",
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
     "cypress": "cypress open",
     "cypress-run": "cypress run",
     "cypress-run-components": "cypress run --component",
-    "lint": "npm run eslint && npm run format",
-    "lint-check": "npm run eslint-check && npm run format-check",
+    "dev": "next dev",
     "eslint": "eslint '**/*.{js,jsx,ts,tsx}' && tsc",
     "eslint-check": "eslint --no-fix '**/*.{js,jsx,ts,tsx}' && tsc",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
-    "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'"
+    "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
+    "lint": "npm run eslint && npm run format",
+    "lint-check": "npm run eslint-check && npm run format-check",
+    "start": "next start",
+    "supabase": "supabase",
+    "update-types": "dotenv -e .env.local -- sh -c 'supabase gen types typescript --db-url $DB_URL > src/lib/database.types.ts'"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "0.5.6",
@@ -47,6 +47,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "nyc": "15.1.0",
     "prettier": "2.8.4",
+    "prettier-plugin-packagejson": "2.4.3",
     "prettier-plugin-sort-json": "1.0.0",
     "supabase": "1.42.5",
     "typescript": "4.9.5"
