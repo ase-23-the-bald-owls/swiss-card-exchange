@@ -38,4 +38,5 @@ next-env.d.ts
 #cypress
 /.nyc_output
 /cypress-coverage
+/cypress/screenshots/
 /cypress/videos
