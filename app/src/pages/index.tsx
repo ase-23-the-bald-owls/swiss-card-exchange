@@ -1,5 +1,5 @@
-import styles from '@/styles/Home.module.css';
 import { Product } from '@/lib/products';
+import styles from '@/styles/Home.module.css';
 import { createSupabaseServer } from '@/utils/supabase-server';
 
 type HomeProps = {

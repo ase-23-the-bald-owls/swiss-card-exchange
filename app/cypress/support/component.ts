@@ -1,6 +1,6 @@
 import './commands';
-import { mount } from 'cypress/react18';
 import '@cypress/code-coverage/support';
+import { mount } from 'cypress/react18';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

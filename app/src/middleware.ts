@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // noinspection JSUnusedLocalSymbols
-/* istanbul ignore file */
 
-import type { NextRequest } from 'next/server';
+/* istanbul ignore file */
 import { Database } from '@/lib/database.types';
-import { NextResponse } from 'next/server';
 import { createMiddlewareSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();

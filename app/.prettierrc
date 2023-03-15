@@ -5,5 +5,7 @@
   "bracketSameLine": false,
   "bracketSpacing": true,
   "printWidth": 90,
-  "jsonRecursiveSort": true
+  "jsonRecursiveSort": true,
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
