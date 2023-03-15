@@ -1,3 +1,4 @@
+import { NavBar } from '@/components/Navigation/NavBar';
 import { Product } from '@/lib/products';
 import styles from '@/styles/Home.module.css';
 import { createSupabaseServer } from '@/utils/supabase-server';
@@ -17,6 +18,7 @@ export async function getServerSideProps() {
 export default function Home({ products }: HomeProps) {
   return (
     <>
+      <NavBar />
       <main className={styles.main} data-testid="index">
         <h1>Here comes the Swiss Card Exchange</h1>
         <ul>
