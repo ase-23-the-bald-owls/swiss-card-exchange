@@ -6,7 +6,6 @@ on:
 
 jobs:
   lint:
-    name: "Lint app"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -35,8 +34,7 @@ jobs:
       - run: npm run lint-check
         working-directory: app
 
-  e2e:
-    name: "e2e tests"
+  tests:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -75,11 +73,33 @@ jobs:
       - run: npm run build
         working-directory: app
 
+      - run: npm run cypress-run-components
+        working-directory: app
+
+      - run: |
+          cp cypress-coverage/lcov.info /tmp/lcov1.info
+        working-directory: app
+
       - run: npm run dev &
+        if: always()
         working-directory: app
 
       - run: npm run cypress-run
+        if: always()
         working-directory: app
+
+      - run: |
+          cp cypress-coverage/lcov.info /tmp/lcov2.info
+        working-directory: app
+
+      - if: always()
+        run: |
+          rm cypress-coverage/lcov.info
+          sudo apt update
+          sudo apt install -y --no-install-recommends lcov
+          find /tmp -name lcov*.info -exec echo -a {} \; | xargs lcov -o cypress-coverage/lcov.info
+        working-directory: app
+          
 
       - name: SonarCloud Scan
         if: always()
@@ -96,43 +116,3 @@ jobs:
           path: |
             app/cypress/screenshots/*
             app/cypress/videos/*
-
-  component:
-    name: "component tests"
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-22.04 ]
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18.15.0'
-
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - run: npm ci
-        working-directory: app
-
-      - run: npm run build
-        working-directory: app
-
-      - run: npm run dev &
-        working-directory: app
-
-      - run: npm run cypress-run-components
-        working-directory: app
-
-      - name: SonarCloud Scan
-        if: always()
-        uses: SonarSource/sonarcloud-github-action@v1.9
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

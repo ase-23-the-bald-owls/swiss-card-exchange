@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // noinspection JSUnusedLocalSymbols
+/* istanbul ignore file */
 
 import type { NextRequest } from 'next/server';
 import { Database } from '@/lib/database.types';
