@@ -4,5 +4,6 @@
   "semi": true,
   "bracketSameLine": false,
   "bracketSpacing": true,
-  "printWidth": 90
+  "printWidth": 90,
+  "jsonRecursiveSort": true
 }
