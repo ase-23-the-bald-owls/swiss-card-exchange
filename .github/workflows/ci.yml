@@ -116,3 +116,12 @@ jobs:
           path: |
             app/cypress/screenshots/*
             app/cypress/videos/*
+
+  ci-completed:
+    name: "e2e tests"
+    needs:
+      - lint
+      - tests
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo "ci successful"
