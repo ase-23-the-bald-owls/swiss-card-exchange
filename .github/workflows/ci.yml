@@ -25,6 +25,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - uses: actions/cache@v3
+        with:
+          path: app/.next
+          key: ${{ runner.os }}-next
+          restore-keys: |
+            ${{ runner.os }}-next
+
       - run: npm ci
         working-directory: app
 
@@ -53,6 +60,13 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      - uses: actions/cache@v3
+        with:
+          path: app/.next
+          key: ${{ runner.os }}-next
+          restore-keys: |
+            ${{ runner.os }}-next
 
       - name: Cache Docker images.
         uses: ScribeMD/docker-cache@0.3.0
@@ -99,7 +113,7 @@ jobs:
           sudo apt install -y --no-install-recommends lcov
           find /tmp -name lcov*.info -exec echo -a {} \; | xargs lcov -o cypress-coverage/lcov.info
         working-directory: app
-          
+
 
       - name: SonarCloud Scan
         if: always()
