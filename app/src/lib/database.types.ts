@@ -5,25 +5,40 @@ export interface Database {
     Tables: {
       products: {
         Row: {
-          content: string | null;
+          attributes: string | null;
+          card_type: string | null;
           created_at: string;
+          description: string | null;
           id: number;
           inserted_at: string;
+          rarity: string | null;
+          set: string | null;
           title: string | null;
+          types: string | null;
         };
         Insert: {
-          content?: string | null;
+          attributes?: string | null;
+          card_type?: string | null;
           created_at?: string;
+          description?: string | null;
           id?: number;
           inserted_at?: string;
+          rarity?: string | null;
+          set?: string | null;
           title?: string | null;
+          types?: string | null;
         };
         Update: {
-          content?: string | null;
+          attributes?: string | null;
+          card_type?: string | null;
           created_at?: string;
+          description?: string | null;
           id?: number;
           inserted_at?: string;
+          rarity?: string | null;
+          set?: string | null;
           title?: string | null;
+          types?: string | null;
         };
       };
     };
