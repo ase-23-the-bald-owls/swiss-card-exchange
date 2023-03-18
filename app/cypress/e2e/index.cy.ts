@@ -3,6 +3,7 @@ export {}; // Next.js requires --isolatedModules in tsconfig to be true. Feel fr
 describe('landing', () => {
   it('should render', () => {
     cy.visitAndWaitFor('/', 'index');
+    cy.get('[data-cy=product-tile]').should('have.lengthOf.at.least', 10);
     cy.screenshot();
   });
 });
