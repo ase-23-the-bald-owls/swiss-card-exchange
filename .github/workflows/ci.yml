@@ -94,7 +94,7 @@ jobs:
           cp cypress-coverage/lcov.info /tmp/lcov1.info
         working-directory: app
 
-      - run: npm run dev &
+      - run: npm run next start &
         if: always()
         working-directory: app
 
