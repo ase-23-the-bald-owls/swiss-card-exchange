@@ -1,12 +1,18 @@
 import { Product } from '@/lib/products';
 import styles from '@/styles/Home.module.css';
 import { createSupabaseServer } from '@/utils/supabase-server';
+import { getProduct } from '@/utils/backend-requests';
 import {Button, ButtonGroup, Input, InputGroup, InputLeftAddon, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { useState } from 'react';
+import TableButton from '@/components/Table/TableButton';
+
 
 
 type HomeProps = {
   products: Product[];
 };
+
+
 
 export async function getServerSideProps() {
   const supabaseServer = createSupabaseServer();
@@ -20,19 +26,27 @@ export async function getServerSideProps() {
 
 
 export default function Backend({ products }: HomeProps) {
+  const [currentProduct,setCurrentProduct] = useState()
 
+  const editEvent = (currentid:number):void => {
+    
+      console.log('id selected: ',currentid)
+   }
+
+   const deleteEvent = (currentid:number):void => {
+    
+    console.log('id selected: ',currentid)
+ }
+
+  const getProduct = (id:string):void => {
+    //TODO: make a request to supabase to get the current selected id an
+    
+  }
 
   return (
     <>
       <main className={styles.main} data-testid="index">
         <h1>Product Backend</h1>
-        
-        <Stack direction="row" spacing={2} align="center">
-          <Input variant="flushed" placeholder="id" size='sm'/>
-          <Button colorScheme="teal" variant="outline">
-            Edit
-          </Button>
-        </Stack>
         <Stack direction='row' spacing={2} align='center'>
         <InputGroup>
           <InputLeftAddon children="title"/>
@@ -45,9 +59,6 @@ export default function Backend({ products }: HomeProps) {
         <ButtonGroup>
           <Button colorScheme="teal" variant="outline">
             Save
-          </Button>
-          <Button colorScheme="red" variant="outline">
-            Delete
           </Button>
         </ButtonGroup>
         </Stack>
@@ -69,6 +80,7 @@ export default function Backend({ products }: HomeProps) {
                 <Td>{product.title}</Td>
                 <Td>{product.rarity}</Td>
                 <Td>{product.created_at}</Td>
+                <Td><TableButton onEdit={() => editEvent(product.id)} onDelete={() => deleteEvent(product.id)}/></Td>
               </Tr>
               ))}
             </Tbody>
