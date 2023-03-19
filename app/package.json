@@ -14,6 +14,7 @@
     "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
     "lint": "npm run eslint && npm run format",
     "lint-check": "npm run eslint-check && npm run format-check",
+    "next": "next",
     "start": "next start",
     "supabase": "supabase",
     "update-types": "dotenv -e .env.local -- sh -c 'supabase gen types typescript --db-url $DB_URL > src/lib/database.types.ts'"
