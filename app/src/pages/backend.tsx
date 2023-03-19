@@ -1,7 +1,8 @@
 import { Product } from '@/lib/products';
 import styles from '@/styles/Home.module.css';
 import { createSupabaseServer } from '@/utils/supabase-server';
-import {Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import {Button, ButtonGroup, Input, InputGroup, InputLeftAddon, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+
 
 type HomeProps = {
   products: Product[];
@@ -15,11 +16,42 @@ export async function getServerSideProps() {
   };
 }
 
+
+
+
 export default function Backend({ products }: HomeProps) {
+
+
   return (
     <>
       <main className={styles.main} data-testid="index">
         <h1>Product Backend</h1>
+        
+        <Stack direction="row" spacing={2} align="center">
+          <Input variant="flushed" placeholder="id" size='sm'/>
+          <Button colorScheme="teal" variant="outline">
+            Edit
+          </Button>
+        </Stack>
+        <Stack direction='row' spacing={2} align='center'>
+        <InputGroup>
+          <InputLeftAddon children="title"/>
+          <Input type="text" borderLeftRadius="0" />
+        </InputGroup>
+        <InputGroup>
+          <InputLeftAddon children="rarity"/>
+          <Input type="text" borderLeftRadius="0" />
+        </InputGroup>
+        <ButtonGroup>
+          <Button colorScheme="teal" variant="outline">
+            Save
+          </Button>
+          <Button colorScheme="red" variant="outline">
+            Delete
+          </Button>
+        </ButtonGroup>
+        </Stack>
+
         <TableContainer>
           <Table variant='striped' colorScheme='teal' size='sm'>
             <Thead>
