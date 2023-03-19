@@ -19,7 +19,7 @@ export async function getServerSideProps() {
 export default function Home({ products }: HomeProps) {
   return (
     <>
-      <NavBar />
+      <NavBar/>
       <main className={styles.main} data-testid="index">
         <ProductGrid products={products} />
       </main>
