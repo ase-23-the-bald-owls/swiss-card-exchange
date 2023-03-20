@@ -1,7 +1,7 @@
 import { Product } from '@/lib/products';
 import styles from '@/styles/Home.module.css';
 import { createSupabaseServer } from '@/utils/supabase-server';
-import {Button, ButtonGroup, Input, InputGroup, InputLeftAddon, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr,Text, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, ModalFooter } from '@chakra-ui/react';
+import {Button, ButtonGroup, Input, InputGroup, InputLeftAddon, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr,Text, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, FormControl, FormLabel, ModalFooter, Textarea, Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverCloseButton, PopoverHeader, PopoverBody } from '@chakra-ui/react';
 import { useState,useRef } from 'react';
 import TableButton from '@/components/Table/TableButton';
 import { useProducts } from '@/hooks/useProducts';
@@ -80,8 +80,12 @@ export default function Backend({ products }: HomeProps) {
 
  
   const handleDeleteConfirm = ():void => {
-
+   
+   // const del = useProducts().deleteProduct(deleteProduct) 
+   
     console.log(deleteProduct, 'deleted!');
+    
+    
     
     
     onClose()
@@ -97,6 +101,8 @@ export default function Backend({ products }: HomeProps) {
 
   const handleSave = ():void => {
     //deliver a product object
+
+
      
   }
 
@@ -105,13 +111,15 @@ export default function Backend({ products }: HomeProps) {
     <>
       <main className={styles.main} data-testid="index">
         <h1>Product Backend</h1>
-        <Stack direction='row' spacing={5} align='center'>
+        <Stack direction='row' spacing={5} align='center' justify='space-around'>
         <Text>id: {editId}</Text>
         <InputGroup size='sm'>
           <InputLeftAddon children="title"/>
           <Input type="text" borderLeftRadius="0" value={editTitle} onChange={(event) => handleTitleChange(event.target.value)}/>
-          <InputLeftAddon children='description'/>
-          <Input type='text' borderLeftRadius='0' value={editDesc} onChange={(event) => handleDescChange(event.target.value)}/>
+        </InputGroup>
+        <InputGroup size='sx'>
+          <Text>Description: </Text>
+          <Textarea size='md' value={editDesc} resize='horizontal' onChange={(event) => handleDescChange(event.target.value)}/>
         </InputGroup>
         <ButtonGroup>
           <Button colorScheme="teal" variant="outline" onClick={() => handleSave()}>
@@ -130,7 +138,7 @@ export default function Backend({ products }: HomeProps) {
               <Th>ID</Th>
               <Th>Title</Th>
               <Th>Rarity</Th>
-              <Th>Added</Th>
+              <Th>Description</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -139,7 +147,18 @@ export default function Backend({ products }: HomeProps) {
                 <Td>{product.id}</Td>
                 <Td>{product.title}</Td>
                 <Td>{product.rarity}</Td>
-                <Td>{product.created_at}</Td>
+                <Td><Popover>
+                  <PopoverTrigger>
+                    <Button>Open</Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <PopoverArrow/>
+                      <PopoverCloseButton />
+                        <PopoverHeader>Description</PopoverHeader>
+                        <PopoverBody display='flex' maxW='sm'>{product.description}</PopoverBody>
+                        </PopoverContent>
+                        </Popover>
+                        </Td>
                 <Td><TableButton onEdit={() => editEvent(product.id)} onDelete={() => deleteEvent(product.id)}/></Td>
               </Tr>
               ))}
