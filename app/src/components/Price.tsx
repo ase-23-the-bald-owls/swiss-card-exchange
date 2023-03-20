@@ -6,7 +6,7 @@ type PriceProps = {
 
 export function Price({ price }: PriceProps) {
   return (
-    <Text color="blue.600" fontSize="2xl">
+    <Text color="blue.200" fontSize="2xl">
       CHF {price.toFixed(2)}
     </Text>
   );
