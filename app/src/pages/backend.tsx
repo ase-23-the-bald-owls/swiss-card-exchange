@@ -1,5 +1,5 @@
 import { Product } from '@/lib/products';
-import styles from '../styles/globals.css';
+import styles from '@/styles/Home.module.css';
 import { createSupabaseServer } from '@/utils/supabase-server';
 import { getProduct } from '@/utils/backend-requests';
 import {Button, ButtonGroup, Input, InputGroup, InputLeftAddon, Stack, Table, TableCaption, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
@@ -26,6 +26,9 @@ export async function getServerSideProps() {
 
 
 export default function Backend({ products }: HomeProps) {
+
+  const [editData,setEditData] = useState();
+  
 
   const editEvent = (currentid:number):void => {
     

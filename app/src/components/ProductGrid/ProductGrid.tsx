@@ -15,7 +15,7 @@ export function ProductGrid({ products }: ProductGridProps) {
       style={{ gridAutoRows: '1fr' }}
       w={{ base: '100%', lg: '80%' }}
     >
-      {products.map((product) => (
+      {products?.map((product) => (
         <ProductTile key={product.id} product={product}></ProductTile>
       ))}
     </SimpleGrid>
