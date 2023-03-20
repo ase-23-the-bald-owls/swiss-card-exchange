@@ -5,6 +5,7 @@ import { Product } from '../../lib/products';
 // noinspection ES6PreferShortImport
 import { ProductDetailsRoute } from '../../utils/routes';
 import { Price } from '../Price';
+import { CardRarityLabel } from '@/components/CardRarityLabel';
 import { Card, CardBody, CardFooter } from '@chakra-ui/card';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Button, ButtonGroup, Divider, Heading, Stack, Text } from '@chakra-ui/react';
@@ -26,6 +27,7 @@ export function ProductTile({ product }: ProductTileProps) {
           <Text>{product.description}</Text>
           <Price price={5} />
         </Stack>
+        <CardRarityLabel rarity={product.rarity} />
       </CardBody>
       <Divider />
       <CardFooter>
