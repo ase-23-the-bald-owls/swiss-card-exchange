@@ -11,6 +11,7 @@ export interface Database {
           description: string | null;
           id: number;
           inserted_at: string;
+          price: number | null;
           rarity: string | null;
           set: string | null;
           title: string | null;
@@ -23,6 +24,7 @@ export interface Database {
           description?: string | null;
           id?: number;
           inserted_at?: string;
+          price?: number | null;
           rarity?: string | null;
           set?: string | null;
           title?: string | null;
@@ -35,6 +37,7 @@ export interface Database {
           description?: string | null;
           id?: number;
           inserted_at?: string;
+          price?: number | null;
           rarity?: string | null;
           set?: string | null;
           title?: string | null;

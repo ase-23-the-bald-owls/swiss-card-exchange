@@ -25,7 +25,7 @@ export function ProductTile({ product }: ProductTileProps) {
         <Stack mt="6" spacing="3">
           <Heading size="md">{product.title}</Heading>
           <Text>{product.description}</Text>
-          <Price price={5} />
+          <Price price={product.price} />
         </Stack>
         <CardRarityLabel rarity={product.rarity} />
       </CardBody>
