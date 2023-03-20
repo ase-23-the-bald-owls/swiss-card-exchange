@@ -3,6 +3,7 @@ import noImage from '../../assets/no-image.png';
 // noinspection ES6PreferShortImport
 import { Product } from '../../lib/products';
 import { Price } from '../Price';
+import { CardRarityLabel } from '@/components/CardRarityLabel';
 import { Card, CardBody, CardFooter } from '@chakra-ui/card';
 import {
   Box,
@@ -57,7 +58,7 @@ export function ProductDetailComponent({ product }: ProductDetailComponentProps)
               <Heading size="sm">Types</Heading>
               <Text>{product.types}</Text>
               <Heading size="sm">Rarity</Heading>
-              <Text>{product.rarity}</Text>
+              <CardRarityLabel rarity={product.rarity} />
             </Grid>
             <Spacer />
             <Price price={5} />
