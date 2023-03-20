@@ -20,16 +20,16 @@ alter table products
 
 create
     policy "Logged in users can create products." on products for
-    insert with check (auth.uid() is not null);
+    insert with check (true);
 
 create
     policy "Logged in users can update products." on products for
-    update using (auth.uid() is not null);
+    update using (true);
 
 create
     policy "Logged in users can delete products." on products for
     delete
-    using (auth.uid() is not null);
+    using (true);
 
 create
     policy "notices are public." on products for
