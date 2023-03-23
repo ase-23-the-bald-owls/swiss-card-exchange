@@ -1,35 +1,17 @@
-# Usage
-#   Start:          docker compose up -d
-#   Stop:           docker compose down
-
 version: "3.8"
 
 services:
-  swag:
-    image: lscr.io/linuxserver/swag:2.2.0
-    container_name: swag
-    cap_add:
-      - NET_ADMIN
+  reverse-proxy:
+    image: nginx:1.23.3
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=${TIMEZONE}
-      - URL=${DOMAIN}
-      - VALIDATION=dns
-      - SUBDOMAINS=supabase
-      - DNSPLUGIN=digitalocean
-      - ONLY_SUBDOMAINS=true
+      - TZ=${TIMEZONE:-Europe/Zurich}
     volumes:
-      - ./supabase.subdomain.conf:/config/nginx/proxy-confs/supabase.subdomain.conf
-      - ./digitalocean.ini:/config/dns-conf/digitalocean.ini
-      - ./.htpasswd:/config/nginx/.htpasswd
+      - swag-config-vol:/etc/nginx/
     ports:
-      - 443:443
-      - 80:80
+      - "80:80"
     restart: unless-stopped
 
   studio:
-    container_name: supabase-studio
     image: supabase/studio:20230216-e731b77
     restart: unless-stopped
     healthcheck:
@@ -38,7 +20,7 @@ services:
       interval: 5s
       retries: 3
     ports:
-      - ${STUDIO_PORT}:3000/tcp
+      - ${STUDIO_PORT:-3000}:3000/tcp
     environment:
       STUDIO_PG_META_URL: http://meta:8080
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -54,12 +36,11 @@ services:
       SUPABASE_SERVICE_KEY: ${SERVICE_ROLE_KEY}
 
   kong:
-    container_name: supabase-kong
     image: kong:2.8.1
     restart: unless-stopped
     ports:
-      - ${KONG_HTTP_PORT}:8000/tcp
-      - ${KONG_HTTPS_PORT}:8443/tcp
+      - ${KONG_HTTP_PORT:-8000}:8000/tcp
+      - ${KONG_HTTPS_PORT:-8443}:8443/tcp
     environment:
       KONG_DATABASE: "off"
       KONG_DECLARATIVE_CONFIG: /var/lib/kong/kong.yml
@@ -69,11 +50,9 @@ services:
       KONG_NGINX_PROXY_PROXY_BUFFER_SIZE: 160k
       KONG_NGINX_PROXY_PROXY_BUFFERS: 64 160k
     volumes:
-      # https://github.com/supabase/supabase/issues/12661
-      - ./volumes/api/kong.yml:/var/lib/kong/kong.yml:ro
+      - kong-vol:/var/lib/kong:ro
 
   auth:
-    container_name: supabase-auth
     image: supabase/gotrue:v2.47.0
     depends_on:
       db:
@@ -93,7 +72,7 @@ services:
       GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
 
       GOTRUE_SITE_URL: ${SITE_URL}
-      GOTRUE_URI_ALLOW_LIST: ${ADDITIONAL_REDIRECT_URLS}
+      GOTRUE_URI_ALLOW_LIST: ${ADDITIONAL_REDIRECT_URLS:-}
       GOTRUE_DISABLE_SIGNUP: ${DISABLE_SIGNUP}
 
       GOTRUE_JWT_ADMIN_ROLES: service_role
@@ -106,12 +85,12 @@ services:
       GOTRUE_MAILER_AUTOCONFIRM: ${ENABLE_EMAIL_AUTOCONFIRM}
       # GOTRUE_MAILER_SECURE_EMAIL_CHANGE_ENABLED: true
       # GOTRUE_SMTP_MAX_FREQUENCY: 1s
-      GOTRUE_SMTP_ADMIN_EMAIL: ${SMTP_ADMIN_EMAIL}
-      GOTRUE_SMTP_HOST: ${SMTP_HOST}
-      GOTRUE_SMTP_PORT: ${SMTP_PORT}
-      GOTRUE_SMTP_USER: ${SMTP_USER}
-      GOTRUE_SMTP_PASS: ${SMTP_PASS}
-      GOTRUE_SMTP_SENDER_NAME: ${SMTP_SENDER_NAME}
+      GOTRUE_SMTP_ADMIN_EMAIL: ${SMTP_ADMIN_EMAIL:-test@localhost.com}
+      GOTRUE_SMTP_HOST: ${SMTP_HOST:-mail}
+      GOTRUE_SMTP_PORT: ${SMTP_PORT:-1025}
+      GOTRUE_SMTP_USER: ${SMTP_USER:-}
+      GOTRUE_SMTP_PASS: ${SMTP_PASS:-}
+      GOTRUE_SMTP_SENDER_NAME: ${SMTP_SENDER_NAME:-test}
       GOTRUE_MAILER_URLPATHS_INVITE: ${MAILER_URLPATHS_INVITE}
       GOTRUE_MAILER_URLPATHS_CONFIRMATION: ${MAILER_URLPATHS_CONFIRMATION}
       GOTRUE_MAILER_URLPATHS_RECOVERY: ${MAILER_URLPATHS_RECOVERY}
@@ -119,10 +98,9 @@ services:
 
       GOTRUE_EXTERNAL_PHONE_ENABLED: ${ENABLE_PHONE_SIGNUP}
       GOTRUE_SMS_AUTOCONFIRM: ${ENABLE_PHONE_AUTOCONFIRM}
-      MFA_ENABLED: ${MFA_ENABLED}
+      MFA_ENABLED: ${MFA_ENABLED:-0}
 
   rest:
-    container_name: supabase-rest
     image: postgrest/postgrest:v10.1.2
     depends_on:
       db:
@@ -130,13 +108,12 @@ services:
     restart: unless-stopped
     environment:
       PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-      PGRST_DB_SCHEMAS: ${PGRST_DB_SCHEMAS}
+      PGRST_DB_SCHEMAS: ${PGRST_DB_SCHEMAS:-public}
       PGRST_DB_ANON_ROLE: anon
       PGRST_JWT_SECRET: ${JWT_SECRET}
       PGRST_DB_USE_LEGACY_GUCS: "false"
 
   realtime:
-    container_name: realtime-dev.supabase-realtime
     image: supabase/realtime:v2.5.1
     depends_on:
       db:
@@ -150,7 +127,7 @@ services:
     environment:
       PORT: 4000
       DB_HOST: ${POSTGRES_HOST}
-      DB_PORT: ${POSTGRES_PORT}
+      DB_PORT: ${POSTGRES_PORT:-5432}
       DB_USER: supabase_admin
       DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_NAME: ${POSTGRES_DB}
@@ -167,7 +144,6 @@ services:
       sh -c "/app/bin/migrate && /app/bin/realtime eval 'Realtime.Release.seeds(Realtime.Repo)' && /app/bin/server"
 
   storage:
-    container_name: supabase-storage
     image: supabase/storage-api:v0.28.2
     depends_on:
       db:
@@ -202,7 +178,6 @@ services:
       GLOBAL_S3_ENDPOINT: ${SPACES_ENDPOINT}
 
   imgproxy:
-    container_name: supabase-imgproxy
     image: darthsim/imgproxy:v3.11
     healthcheck:
       test: [ "CMD", "imgproxy", "health" ]
@@ -214,10 +189,9 @@ services:
       IMGPROXY_LOCAL_FILESYSTEM_ROOT: /
       IMGPROXY_USE_ETAG: "true"
     volumes:
-      - ./volumes/storage:/var/lib/storage
+      - img-proxy:/var/lib/storage
 
   meta:
-    container_name: supabase-meta
     image: supabase/postgres-meta:v0.60.7
     depends_on:
       db:
@@ -232,8 +206,7 @@ services:
       PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD}
 
   db:
-    container_name: supabase-db
-    image: supabase/postgres:15.1.0.42-rc2
+    image: supabase/postgres:15.1.0.53
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
@@ -248,18 +221,22 @@ services:
     restart: unless-stopped
     ports:
       # Pass down internal port because it's set dynamically by other services
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_PORT:-5432}:${POSTGRES_PORT:-5432}
     environment:
       POSTGRES_HOST: /var/run/postgresql
-      PGPORT: ${POSTGRES_PORT}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      PGPASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PGDATABASE: ${POSTGRES_DB}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/realtime.sql
-      - ./volumes/db/roles.sql:/docker-entrypoint-initdb.d/roles.sql
-      # Must be superuser to enable pg_net extension
-      - ./volumes/db/webhooks.sql:/etc/postgresql.schema.sql
-      - /mnt/supabase_volume/supabase/data/:/var/lib/postgresql/data
+      - schema-vol:/docker-entrypoint-initdb.d/
+
+volumes:
+  img-proxy:
+  swag-config-vol:
+    name: supabase-swag-config-vol
+    external: true
+  schema-vol:
+    name: supabase-schema-config-vol
+    external: true
+  kong-vol:
+    name: supabase-kong-vol
+    external: true
