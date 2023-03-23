@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  supabase-dc:
+    build:
+      context: .
+      dockerfile: supabase/Dockerfile
+    image: ${CONTAINER_REGISTRY:-docker.io}/${REPO_NAME:-playground-localstack}/supabase-dc
+    volumes:
+      - "./supabase/entrypoint.sh:/usr/local/bin/entrypoint"
+      - "${DOCKER_SOCK_PATH:-/var/run/docker.sock}:/var/run/docker.sock"
+    profiles:
+      - "local-run"
+    env_file:
+      - .env
