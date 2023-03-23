@@ -21,6 +21,8 @@ COPY --link --from=getenvsubst /usr/local/bin/envsubst /usr/local/bin/envsubst
 RUN mkdir -p /app/volumes/ /tmp/pg-init
 
 COPY --link supabase/app/ /app
+COPY --link app/supabase/migrations/20230315000000_create-products.sql /app/volumes/db/migrations/ZZ01-schema.sql
+COPY --link app/supabase/seed.sql /app/volumes/db/migrations/ZZ99-seed.sql
 
 COPY --link --from=supabase/postgres:15.1.0.53 /docker-entrypoint-initdb.d /tmp/pg-init
 RUN rsync -r /tmp/pg-init/ /app/volumes/db/
