@@ -13,3 +13,14 @@ services:
       - "local-run"
     env_file:
       - .env
+
+  sce:
+    build:
+      context: app
+    image: ${CONTAINER_REGISTRY:-docker.io}/${REPO_NAME:-playground-localstack}/sce-app
+    profiles:
+      - "local-run"
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=http://localhost
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${ANON_KEY}
+    network_mode: host
