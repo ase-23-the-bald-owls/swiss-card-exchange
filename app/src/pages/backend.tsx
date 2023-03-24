@@ -25,14 +25,7 @@ export async function getServerSideProps() {
 
 export default function Backend({ products }: HomeProps) {
 
-  const [editProduct, setEditProduct] = useState<Product | null >(null);
-  const [editId, setEditId] = useState<number | null>()
-  const [editTitle,setEditTitle] = useState<string>('')
-  const [editDesc, setEditDesc] = useState<string>('')
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [deleteProduct,setDeleteProduct] = useState<Product | null>(null);
-  const initialRef = useRef(null)
-  const finalRef = useRef(null)
+  
 
   const editEvent = (currentid:number):void => {
     
@@ -45,26 +38,11 @@ export default function Backend({ products }: HomeProps) {
         throw new Error('product not found lol')
       }
       console.log(selected);
-      
-      setEditProduct(selected[0] || null)
-      setEditTitle(editProduct?.title || '')
-      setEditDesc(editProduct?.description || '')
-      setEditId(editProduct?.id)
-      
-   }
-
-   const handleTitleChange = (title:string) => {
-    setEditTitle(title)
-    
-  }
-
-   const handleDescChange = (currentDesc:string) => {
-
-      setEditDesc(currentDesc)
+          
    }
 
    const deleteEvent = (currentid:number):void => {
-      onOpen()
+     
       const selected = products.filter((product) => product.id === currentid)
       
       if (selected.length === 0) {
@@ -73,38 +51,11 @@ export default function Backend({ products }: HomeProps) {
       }
       console.log(selected);
       
-      setDeleteProduct(selected[0] || null)
-    
+          
     console.log('id selected: ',currentid)
  }
 
- 
-  const handleDeleteConfirm = ():void => {
-   
-   // const del = useProducts().deleteProduct(deleteProduct) 
-   
-    console.log(deleteProduct, 'deleted!');
-    
-    
-    
-    
-    onClose()
-  }
-  const clearEvent =():void => { 
-    
-    setEditProduct(null)
-    setEditTitle('')
-    setEditDesc('')
-    setEditId(null)
-  
-  }
 
-  const handleSave = ():void => {
-    //deliver a product object
-
-
-     
-  }
 
 
   return (
@@ -112,23 +63,7 @@ export default function Backend({ products }: HomeProps) {
       <main className={styles.main} data-testid="index">
         <h1>Product Backend</h1>
         <Stack direction='row' spacing={5} align='center' justify='space-around'>
-        <Text>id: {editId}</Text>
-        <InputGroup size='sm'>
-          <InputLeftAddon children="title"/>
-          <Input type="text" borderLeftRadius="0" value={editTitle} onChange={(event) => handleTitleChange(event.target.value)}/>
-        </InputGroup>
-        <InputGroup size='sx'>
-          <Text>Description: </Text>
-          <Textarea size='md' value={editDesc} resize='horizontal' onChange={(event) => handleDescChange(event.target.value)}/>
-        </InputGroup>
-        <ButtonGroup>
-          <Button colorScheme="teal" variant="outline" onClick={() => handleSave()}>
-            Save
-          </Button>
-          <Button colorScheme="teal" variant="outline" onClick={() => clearEvent()}>
-            Clear
-          </Button>
-        </ButtonGroup>
+          <Button>Add Product</Button>
         </Stack>
 
         <TableContainer>
@@ -166,29 +101,6 @@ export default function Backend({ products }: HomeProps) {
           <TableCaption>Product Backlog</TableCaption>
           </Table>
         </TableContainer>
-
-        <Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen}onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Are you sure you want to the delete the following product?</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl mt={4}>
-              <FormLabel>id: {deleteProduct?.id}</FormLabel>
-              <FormLabel>Title: {deleteProduct?.title}</FormLabel>
-              <FormLabel>Description: {deleteProduct?.description}</FormLabel>
-              <FormLabel>Rarity: {deleteProduct?.rarity}</FormLabel>
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme='red' mr={3} onClick={()=> handleDeleteConfirm()}>
-              Delete
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
       </main>
     </>
   );
