@@ -10,6 +10,13 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - supabase.local
+      localstack-subnet:
+        aliases:
+          - supabase.local
 
   studio:
     image: supabase/studio:20230216-e731b77
@@ -239,4 +246,9 @@ volumes:
     external: true
   kong-vol:
     name: supabase-kong-vol
+    external: true
+
+networks:
+  localstack-subnet:
+    name: "localstack-subnet"
     external: true
