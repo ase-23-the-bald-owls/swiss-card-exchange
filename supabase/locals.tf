@@ -72,30 +72,6 @@ locals {
         { "name" = "SUPABASE_PUBLIC_URL", "value" = "http://localhost" },
       ],
       "portMappings" = [
-        #        {
-        #          "containerPort" = 80,
-        #          "hostPort"      = 8080
-        #        },
-        #        {
-        #          "containerPort" = 443,
-        #          "hostPort"      = 9443
-        #        },
-        #        {
-        #          "containerPort" = 3000,
-        #          "hostPort"      = 3000
-        #        },
-        #        {
-        #          "containerPort" = 5432,
-        #          "hostPort"      = 5432
-        #        },
-        #        {
-        #          "containerPort" = 8000,
-        #          "hostPort"      = 8000
-        #        },
-        #        {
-        #          "containerPort" = 8443,
-        #          "hostPort"      = 8443
-        #        }
       ]
       "mountPoints" = [
         { "sourceVolume" : local.docker_sock_volume_name, "containerPath" = "/var/run/docker.sock" }
