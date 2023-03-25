@@ -4,6 +4,20 @@ This is a student project developed by @BacLuc and @Off3line.
 The goal of the courses project is to create a cloud native e-commerce application.  
 [Course page of Advanced Software Engineering @UZH](https://www.ifi.uzh.ch/en/seal/teaching/courses/ase.html)
 
+## Github Badges:
+
+[![CI](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/ci.yml/badge.svg)](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/ci.yml)
+[![CD](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/cd.yml/badge.svg)](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/cd.yml)
+[![Development setup](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/development-setup.yml/badge.svg)](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/development-setup.yml)
+
+## SonarCloud Badges:
+
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ase-23-the-bald-owls_swiss-card-exchange&metric=bugs)](https://sonarcloud.io/summary/new_code?id=ase-23-the-bald-owls_swiss-card-exchange)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ase-23-the-bald-owls_swiss-card-exchange&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=ase-23-the-bald-owls_swiss-card-exchange)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ase-23-the-bald-owls_swiss-card-exchange&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ase-23-the-bald-owls_swiss-card-exchange)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=ase-23-the-bald-owls_swiss-card-exchange&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=ase-23-the-bald-owls_swiss-card-exchange)
+
+
 ## Stack
 
 The app is a nextjs application with supabase for the persistence.
