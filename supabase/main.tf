@@ -3,11 +3,11 @@ resource "aws_s3_bucket" "supabase-bucket" {
 }
 
 resource "aws_ecs_cluster" "sce-cluster" {
-  name = "cluster" # Name your cluster here
+  name = "supabase-cluster"
 }
 
 resource "aws_ecs_task_definition" "supabase-dc" {
-  family                = "supabase-dc" # Naming our first task
+  family                = "supabase-dc"
   container_definitions = jsonencode(local.supabase-dc-ecs-config)
   volume {
     name      = local.docker_sock_volume_name

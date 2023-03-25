@@ -41,6 +41,7 @@ And you need the following entries in your hosts file.
 ```
 127.0.0.1 s3.localhost.localstack.cloud
 127.0.0.1 supabase.s3.localhost.localstack.cloud
+127.0.0.1 supabase.local
 ```
 
 Then download the providers used by terraform: `tflocal init`  
@@ -52,6 +53,7 @@ Then download the providers used by terraform: `tflocal init`
 3. Apply the changes: `tflocal apply --auto-approve`
 
 Then, supabase should be reachable under [http://localhost:3000](http://localhost:3000)
+sce-app is reachable under [http://localhost:8080](http://localhost:8080)
 
 ### Cleanup
 
