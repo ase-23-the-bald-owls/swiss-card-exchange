@@ -29,4 +29,32 @@ docker compose -f supabase/app/docker-compose.yml down
 
 ## Deployment on localstack
 
-TBD
+### Setup
+
+To deploy to the localstack docker compose service, you need the following tools:
+
+- terraform [Link to install instructions](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- tflocal [link to install instructions](https://github.com/localstack/terraform-local)
+
+And you need the following entries in your hosts file.
+(/etc/hosts in linux, C:\Windows\System32\drivers\etc\hosts on windows)
+```
+127.0.0.1 s3.localhost.localstack.cloud
+127.0.0.1 supabase.s3.localhost.localstack.cloud
+```
+
+Then download the providers used by terraform: `tflocal init`  
+
+### Deploy
+
+1. Start the localstack container: `docker compose up -d`
+2. Refresh the terraform state: `tflocal refresh`
+3. Apply the changes: `tflocal apply --auto-approve`
+
+Then, supabase should be reachable under [http://localhost:3000](http://localhost:3000)
+
+### Cleanup
+
+1. Destroy the resources of terraform: `tflocal destroy --auto-approve`
+2. Shut down the containers: `docker compose -f supabase/app/docker-compose.yml down`
+3. Shut down localstack: `docker compose down`
