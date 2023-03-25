@@ -1,0 +1,63 @@
+name: "Development setup"
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    name: Build and push docker images
+    uses: ./.github/workflows/build-images.yml
+    secrets: inherit
+
+  deploy:
+    needs:
+      - build-and-push
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-22.04 ]
+      fail-fast: false
+    env:
+      VERSION: ${{ github.sha }}
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - uses: actions/checkout@v3
+
+      - run: cp .env.example .env
+
+      - run: sed -i 's|<your api key>|${{ secrets.LOCALSTACK_API_KEY }}|g' .env
+
+      - run: docker compose --profile local-run pull
+
+      - run: docker compose --profile local-run up -d
+
+      - run: npm ci
+        working-directory: app
+
+      - run: ./wait-for-supabase.sh
+
+      - run: ./wait-for-sce-app.sh
+
+      - run: npm run cypress-run
+        working-directory: app
+        env:
+          CYPRESS_BASE_URL: http://localhost:8080
+
+      - run: |
+          for container in $(docker ps -a -q | xargs -L 1 echo); do
+            echo "showing logs of container $container"
+            docker ps -a | grep $container
+            docker logs $container
+          done
+        if: always()
