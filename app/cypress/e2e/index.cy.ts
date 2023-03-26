@@ -7,6 +7,6 @@ describe('landing', () => {
   it('should render', () => {
     cy.visitAndWaitFor(HomeRoute, 'index');
     cy.get('[data-cy=product-tile]').should('have.lengthOf.at.least', 10);
-    cy.screenshot();
+    cy.runnerScreenShot();
   });
 });

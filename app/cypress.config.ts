@@ -11,8 +11,8 @@ export default defineConfig({
     baseUrl: 'http://localhost:3000/',
     supportFile: 'cypress/support/e2e.ts',
     // the screenshots dont work well with larger screens
-    viewportWidth: 1368,
-    viewportHeight: 768,
+    viewportWidth: 1900,
+    viewportHeight: 1200,
     setupNodeEvents(on, config) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('@cypress/code-coverage/task')(on, config);
