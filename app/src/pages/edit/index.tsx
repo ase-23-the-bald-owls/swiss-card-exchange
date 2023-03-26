@@ -11,8 +11,7 @@ type EditProductProperties =  {
 
 export default function Edit({prod}:EditProductProperties) {
 
-  const [rarity, setRarity] = useState<string>('Common');
-  const [type,setType] = useState<string>('Monster')
+  
   const createProduct = {
     attributes: '',
     card_type: '',
@@ -108,7 +107,6 @@ export default function Edit({prod}:EditProductProperties) {
           <Field id="set" name="set" placeholder="Set" />
           </FormControl>
           <Button type="submit">Save</Button>
-          <Button>Clear</Button>
         </Form>
       </Formik>
     </Stack>
