@@ -130,6 +130,15 @@ jobs:
       - run: npm run cypress-run-components
         working-directory: app
 
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-artifacts
+          path: |
+            app/cypress/screenshots/*
+            app/cypress/videos/*
+
       - run: |
           cp cypress-coverage/lcov.info /tmp/lcov1.info
         working-directory: app
