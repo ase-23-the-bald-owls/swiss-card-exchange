@@ -34,7 +34,7 @@ export async function getServerSideProps({ params }: GetServerSidePropsContext) 
 }
 
 
-export default function Edit({product, code}:EditProductProperties) {
+export default function EditProduct({product, code}:EditProductProperties) {
 
   const {updateProduct} =  useProducts()
   const router = useRouter()

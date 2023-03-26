@@ -2,17 +2,17 @@ import { useState} from 'react';
 import { Formik, Field, Form, FormikHelpers } from 'formik';
 import { Box, Stack, Input, Text, Button, RadioGroup, Radio, FormControl, FormLabel } from '@chakra-ui/react';
 import { Product } from '@/lib/products';
-import { type } from 'os';
-
-type EditProductProperties =  {
-  prod: Product;
-}
+import {useProducts } from '@/hooks/useProducts';
+import { useRouter } from 'next/router';
+import { BackendProducts } from '@/utils/routes';
 
 
-export default function Edit({prod}:EditProductProperties) {
+export default function AddProduct() {
 
+  const {createProduct} = useProducts();
   
-  const createProduct = {
+  const router = useRouter();
+  const product:Product = {
     attributes: '',
     card_type: '',
     description: '',
@@ -20,24 +20,30 @@ export default function Edit({prod}:EditProductProperties) {
     rarity: '',
     set: '',
     title: '',
-    types: '',}
+    types: '',
+    created_at: new Date().toISOString(),
+    inserted_at: new Date().toISOString(),
+  
+  }
 
   return (
 
     <Box  w='60%' p={4}>
         <Stack>
-        <Text fontSize='5xl'>Edit or Create Products</Text>
+        <Text fontSize='5xl'>Create Products</Text>
       <Formik
-        initialValues={createProduct}
-        onSubmit={(values, actions) => {
+        initialValues={product}
+        onSubmit={async (values, actions) => {
+          await createProduct(values)
           console.log({ values, actions });
-          alert(JSON.stringify(values, null, 2));
+          alert('Successfully created a Product!');
           actions.setSubmitting(false);
+          router.push(BackendProducts)
          }} >
           
         <Form> 
           <FormControl isReadOnly>
-          <FormLabel htmlFor='id' >Id: </FormLabel>
+          <FormLabel htmlFor='id' >Id: Automatically assigned </FormLabel>
           </FormControl>
           <FormControl isRequired>
           <Field id="title" name="title" placeholder="Title" />
