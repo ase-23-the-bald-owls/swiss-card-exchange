@@ -46,12 +46,13 @@ export default function EditProduct({ product, code }: EditProductProperties) {
     card_type: product.card_type ?? '',
     created_at: product.created_at ?? '',
     description: product.description ?? '',
-    id: product.id ?? '',
+    id: product.id ?? null,
     inserted_at: product.inserted_at ?? '',
     rarity: product.rarity ?? '',
     set: product.set ?? '',
     title: product.title ?? '',
     types: product.types ?? '',
+    price: product.price ?? null,
   };
 
   return (

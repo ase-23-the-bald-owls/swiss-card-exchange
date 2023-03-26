@@ -18,6 +18,7 @@ export default function AddProduct() {
     set: '',
     title: '',
     types: '',
+    price: 666,
     created_at: new Date().toISOString(),
     inserted_at: new Date().toISOString(),
   };
