@@ -1,2 +1,5 @@
+**/*.tfstate*
 *.iml
 .idea
+.terraform
+/.env

@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  localstack:
+    image: ${LOCALSTACK_IMAGE:-localstack/localstack:1.4.0}
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      - DEBUG=${DEBUG-true}
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
+      - LAMBDA_DOCKER_NETWORK=localstack-subnet
+      - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY:-}
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - S3_HOSTNAME=localhost
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - "${LOCALSTACK_VOLUME:-localstack-persistence}:/var/lib/localstack"
+      - "${DOCKER_SOCK_PATH:-/var/run/docker.sock}:/var/run/docker.sock"
+    networks:
+      default:
+        aliases:
+          - localstack.cloud
+          - localhost.localstack.cloud
+          - s3.localhost.localstack.cloud
+          - supabase.s3.localhost.localstack.cloud
+          - supabase.s3-website-us-east-1.amazonaws.com
+      localstack-subnet:
+        aliases:
+          - localstack.cloud
+          - localhost.localstack.cloud
+          - s3.localhost.localstack.cloud
+          - mybucket.s3.localhost.localstack.cloud
+          - mybucket.s3-website-us-east-1.amazonaws.com
+
+  supabase-dc:
+    build:
+      context: .
+      dockerfile: supabase/Dockerfile
+    image: ${CONTAINER_REGISTRY:-ghcr.io}/${REPO_OWNER:-ase-23-the-bald-owls}/${REPO_NAME:-swiss-card-exchange}/supabase-dc:${VERSION:-local}
+    volumes:
+      - "./supabase/entrypoint.sh:/usr/local/bin/entrypoint"
+      - "${DOCKER_SOCK_PATH:-/var/run/docker.sock}:/var/run/docker.sock"
+    profiles:
+      - "local-run"
+    env_file:
+      - .env
+
+  sce:
+    build:
+      context: app
+      dockerfile: ${SCE_DOCKERFILE_PATH:-Dockerfile}
+    image: ${CONTAINER_REGISTRY:-ghcr.io}/${REPO_OWNER:-ase-23-the-bald-owls}/${REPO_NAME:-swiss-card-exchange}/sce-app:${VERSION:-local}
+    profiles:
+      - "local-run"
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=http://localhost
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${ANON_KEY}
+    network_mode: host
+
+volumes:
+  localstack-persistence:
+
+networks:
+  default:
+  localstack-subnet:
+    name: "localstack-subnet"

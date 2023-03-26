@@ -2,10 +2,35 @@
 import noImage from '../../assets/no-image.png';
 // noinspection ES6PreferShortImport
 import { Product } from '../../lib/products';
+import { Price } from '../Price';
+import { CardRarityLabel } from '@/components/CardRarityLabel';
 import { Card, CardBody, CardFooter } from '@chakra-ui/card';
-import { Button, ButtonGroup, Divider, Heading, Stack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Divider,
+  Grid,
+  HStack,
+  Heading,
+  Spacer,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
+
+type CenterBoxProps = {
+  children: React.ReactNode;
+};
+
+function CenterBox({ children }: CenterBoxProps) {
+  return (
+    <HStack align={'space-around'}>
+      <Box style={{ maxWidth: '800px' }}>{children}</Box>
+    </HStack>
+  );
+}
 
 type ProductDetailComponentProps = {
   product: Product;
@@ -13,29 +38,41 @@ type ProductDetailComponentProps = {
 
 export function ProductDetailComponent({ product }: ProductDetailComponentProps) {
   return (
-    <Card maxW="max" data-cy={'product-detail'}>
-      <CardBody>
-        <Image
-          src={noImage}
-          alt={`Image of ${product.title}`}
-          style={{ margin: 'auto' }}
-        />
-        <Stack mt="6" spacing="3">
-          <Heading size="md">{product.title}</Heading>
-          <Text>{product.description}</Text>
-          <Text color="blue.600" fontSize="2xl">
-            CHF 5.00
-          </Text>
-        </Stack>
-      </CardBody>
-      <Divider />
-      <CardFooter>
-        <ButtonGroup spacing="2">
-          <Button variant="ghost" colorScheme="blue">
-            Add to cart
-          </Button>
-        </ButtonGroup>
-      </CardFooter>
-    </Card>
+    <CenterBox>
+      <Card maxW="max" data-cy={'product-detail'}>
+        <CardBody>
+          <VStack>
+            <Image
+              src={noImage}
+              alt={`Image of ${product.title}`}
+              style={{ margin: 'auto' }}
+            />
+            <Heading size="md">{product.title}</Heading>
+            <Text>{product.description}</Text>
+            <Spacer />
+            <Grid templateColumns="2fr 1fr" minWidth={{ base: '80%', md: '50%' }}>
+              <Heading size="sm">Card Type</Heading>
+              <Text>{product.card_type}</Text>
+              <Heading size="sm">Set</Heading>
+              <Text>{product.set}</Text>
+              <Heading size="sm">Types</Heading>
+              <Text>{product.types}</Text>
+              <Heading size="sm">Rarity</Heading>
+              <CardRarityLabel rarity={product.rarity} />
+            </Grid>
+            <Spacer />
+            <Price price={5} />
+          </VStack>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <ButtonGroup spacing="2">
+            <Button variant="ghost" colorScheme="blue">
+              Add to cart
+            </Button>
+          </ButtonGroup>
+        </CardFooter>
+      </Card>
+    </CenterBox>
   );
 }

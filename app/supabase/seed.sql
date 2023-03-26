@@ -1577,3 +1577,6 @@ VALUES ('Witch of the Black Forest',
        ('Scareclaw Sclash',
         'This is one of the most iconic and powerful monsters in the game. It''s a Level 8 Dragon-Type monster with 3000 ATK and 2500 DEF. Its effect allows it to make up to three attacks on monsters during each Battle Phase.',
         'Super Rare', 'Dimension Force', 'Trap', null, null);
+
+UPDATE products
+SET price = ROUND(CAST(random() * 1000 + 1 as numeric), 1) + (ROUND(random()::numeric) * 0.05);

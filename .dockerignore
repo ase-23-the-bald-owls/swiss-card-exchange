@@ -1,0 +1,4 @@
+**
+!/app/supabase/migrations
+!/app/supabase/seed.sql
+!/supabase

@@ -45,6 +45,32 @@ jobs:
       - run: npm run lint-check
         working-directory: app
 
+  lint-terraform:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.2
+
+      - run: terraform init
+
+      - run: terraform fmt -recursive -check -diff
+
+  validate-terraform:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.2
+
+      - run: terraform init
+
+      - run: terraform validate
+
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -139,10 +165,11 @@ jobs:
             app/cypress/videos/*
 
   ci-completed:
-    name: "e2e tests"
     needs:
       - lint
       - tests
+      - lint-terraform
+      - validate-terraform
     runs-on: ubuntu-22.04
     steps:
       - run: echo "ci successful"
