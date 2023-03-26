@@ -50,6 +50,13 @@ jobs:
         with:
           terraform_version: 1.4.2
 
+      - uses: actions/cache@v3
+        with:
+          path: .terraform
+          key: ${{ runner.os }}-node-${{ hashFiles('.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - run: terraform init
 
       - run: terraform fmt -recursive -check -diff
@@ -62,6 +69,13 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.4.2
+
+      - uses: actions/cache@v3
+        with:
+          path: .terraform
+          key: ${{ runner.os }}-node-${{ hashFiles('.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - run: terraform init
 

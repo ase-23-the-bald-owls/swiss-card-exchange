@@ -48,6 +48,13 @@ jobs:
 
       - run: docker compose up -d
 
+      - uses: actions/cache@v3
+        with:
+          path: .terraform
+          key: ${{ runner.os }}-node-${{ hashFiles('.terraform.lock.hcl') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - run: tflocal init
 
       - run: ./wait-for-localstack.sh
