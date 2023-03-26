@@ -1,10 +1,15 @@
+import { SupabaseProvider } from '@/hooks/useSupabaseBrowser';
 import '@/styles/globals.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { QueryClient } from '@tanstack/query-core';
+import { QueryClientProvider } from '@tanstack/react-query';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
 export default function App({ Component, pageProps }: AppProps) {
   const theme = extendTheme({ initialColorMode: 'dark' });
+  const queryClient = new QueryClient();
+
   return (
     <>
       <Head>
@@ -13,9 +18,13 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <SupabaseProvider>
+        <QueryClientProvider client={queryClient}>
+          <ChakraProvider theme={theme}>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </QueryClientProvider>
+      </SupabaseProvider>
     </>
   );
 }
