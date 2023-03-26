@@ -10,6 +10,7 @@ import { EditProductRoute } from '@/utils/routes';
 
 
 
+
 type HomeProps = {
   products: Product[];
 };
@@ -26,42 +27,8 @@ export async function getServerSideProps() {
 
 
 export default function Backend({ products }: HomeProps) {
-
-  const [selected,setSelected] = useState<Product>;
-
   
 
-  const editEvent = (currentid:number):void => {
-    
-      console.log('id selected: ',currentid)
-      
-       setSelected(products.filter((product) => product.id === currentid))
-      
-      if (selected === 0) {
-
-
-        throw new Error('product not found lol')
-      }
-      console.log(selected);
-
-
-      
-          
-   }
-
-   const deleteEvent = (currentid:number):void => {
-     
-       setSelected(products.filter((product) => product.id === currentid)) 
-      
-      if (selected.length === 0) {
-
-        throw new Error('product not found lol')
-      }
-      console.log(selected);
-      
-          
-    console.log('id selected: ',currentid)
- }
 
 
 
@@ -105,7 +72,7 @@ export default function Backend({ products }: HomeProps) {
                         </PopoverContent>
                         </Popover>
                         </Td>
-                <Td><TableButton onEdit={() => editEvent(product.id)} onDelete={() => deleteEvent(product.id)}  prod={selected} /></Td>
+                <Td><TableButton onEdit={() => null} onDelete={() => null}  prod={product} /></Td>
               </Tr>
               ))}
             </Tbody>
