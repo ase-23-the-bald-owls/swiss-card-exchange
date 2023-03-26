@@ -7,6 +7,9 @@ describe('landing', () => {
   it('should render', () => {
     cy.visitAndWaitFor(HomeRoute, 'index');
     cy.get('[data-cy=product-tile]').should('have.lengthOf.at.least', 10);
+    cy.get('img').should(($imgs) =>
+      $imgs.map((i, img) => expect(img.naturalWidth).to.be.greaterThan(0))
+    );
     cy.runnerScreenShot();
   });
 });
