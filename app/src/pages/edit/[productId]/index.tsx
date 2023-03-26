@@ -2,13 +2,14 @@ import { useState} from 'react';
 import { Formik, Field, Form, FormikHelpers } from 'formik';
 import { Box, Stack, Input, Text, Button, RadioGroup, Radio, FormControl, FormLabel } from '@chakra-ui/react';
 import { Product } from '@/lib/products';
-import { type } from 'os';
+type EditProductProperties =  {
+  prod: Product
+}
 
 
+export default function Edit({prod}:EditProductProperties) {
 
-export default function Edit({}) {
-
-  const [editProduct, setEditProduct] = useState<Product | null >(null);
+  const [editProduct, setEditProduct] = useState<Product | null >();
   const [rarity, setRarity] = useState<string>('');
   const [type,setType] = useState<string>('Monster')
 
@@ -18,14 +19,14 @@ export default function Edit({}) {
         <Text fontSize='5xl'>Edit or Create Products</Text>
       <Formik
         initialValues={{
-          attributes: null,
-          card_type: null,
-          description: null,
-          id: null,
-          rarity: null,
-          set: null,
-          title: null,
-          types: null,
+          attributes: prod?.attributes,
+          card_type: prod?.card_type,
+          description: prod?.description,
+          id: prod?.id,
+          rarity: prod?.rarity,
+          set: prod?.set,
+          title: prod?.title,
+          types: prod?.types,
         }}
         onSubmit={( values: Product,{setSubmitting }: FormikHelpers<Product>) => {
           setTimeout(() => { alert(JSON.stringify(values, null, 2));
@@ -34,14 +35,16 @@ export default function Edit({}) {
         }}
       >
         <Form>
-          <FormControl isRequired>
-          <FormLabel>Id:{}</FormLabel>
+          <FormControl isReadOnly>
+          <FormLabel htmlFor='id'>Id:{}</FormLabel>
           </FormControl>
-          
           <FormControl isRequired>
           <Input id="title" name="title" placeholder="Title" />
           </FormControl>
+          <FormControl isRequired>
           <Input id="description" name="description" placeholder="Description" />
+          </FormControl>
+          <FormControl isRequired>
           <RadioGroup onChange={setRarity} value={rarity} defaultValue='Common'>
           <Stack direction='row'>
           <Radio value='Common'>Common</Radio>
@@ -54,6 +57,8 @@ export default function Edit({}) {
           <Radio value='Premium Gold Rare'>Premium Gold Rare</Radio>
           </Stack>
           </RadioGroup>
+          </FormControl>
+          
          
 
 

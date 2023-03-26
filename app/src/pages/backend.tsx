@@ -5,6 +5,8 @@ import {Button, ButtonGroup, Input, InputGroup, InputLeftAddon, Stack, Table, Ta
 import { useState,useRef } from 'react';
 import TableButton from '@/components/Table/TableButton';
 import { useProducts } from '@/hooks/useProducts';
+import Link from 'next/link';
+import { EditProductRoute } from '@/utils/routes';
 
 
 
@@ -25,25 +27,31 @@ export async function getServerSideProps() {
 
 export default function Backend({ products }: HomeProps) {
 
+  const [selected,setSelected] = useState<Product>;
+
   
 
   const editEvent = (currentid:number):void => {
     
       console.log('id selected: ',currentid)
       
-      const selected = products.filter((product) => product.id === currentid)
+       setSelected(products.filter((product) => product.id === currentid))
       
-      if (selected.length === 0) {
+      if (selected === 0) {
+
 
         throw new Error('product not found lol')
       }
       console.log(selected);
+
+
+      
           
    }
 
    const deleteEvent = (currentid:number):void => {
      
-      const selected = products.filter((product) => product.id === currentid)
+       setSelected(products.filter((product) => product.id === currentid)) 
       
       if (selected.length === 0) {
 
@@ -63,7 +71,10 @@ export default function Backend({ products }: HomeProps) {
       <main className={styles.main} data-testid="index">
         <h1>Product Backend</h1>
         <Stack direction='row' spacing={5} align='center' justify='space-around'>
-          <Button>Add Product</Button>
+          <Link href={EditProductRoute}>
+           <Button>Add Product</Button>
+          </Link>
+         
         </Stack>
 
         <TableContainer>
@@ -94,13 +105,14 @@ export default function Backend({ products }: HomeProps) {
                         </PopoverContent>
                         </Popover>
                         </Td>
-                <Td><TableButton onEdit={() => editEvent(product.id)} onDelete={() => deleteEvent(product.id)}/></Td>
+                <Td><TableButton onEdit={() => editEvent(product.id)} onDelete={() => deleteEvent(product.id)}  prod={selected} /></Td>
               </Tr>
               ))}
             </Tbody>
           <TableCaption>Product Backlog</TableCaption>
           </Table>
         </TableContainer>
+        <Text>{JSON.stringify(products[1])}</Text>
       </main>
     </>
   );
