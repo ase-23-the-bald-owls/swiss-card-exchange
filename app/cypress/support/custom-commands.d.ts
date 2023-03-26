@@ -13,5 +13,12 @@ declare namespace Cypress {
      * @example cy.visitAndWaitFor('/contact', 'contact_page_hero_banner')
      */
     visitAndWaitFor(pathname: string, testId: string): void;
+
+    /**
+     * Because the screenshots don't look good on the other options,
+     * this command captures a screenshot with the option
+     * { capture: 'runner' }
+     */
+    runnerScreenShot(): void;
   }
 }

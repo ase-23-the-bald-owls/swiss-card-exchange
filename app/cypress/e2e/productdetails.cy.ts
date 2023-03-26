@@ -10,7 +10,7 @@ describe('the product details', () => {
 
     cy.location('pathname').should('contain', ProductDetailsRoute);
     cy.get('[data-cy=product-detail]').should('have.length', 1);
-    cy.screenshot();
+    cy.runnerScreenShot();
   });
 
   it('can be left by clicking on the logo', () => {

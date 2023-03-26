@@ -9,3 +9,7 @@ Cypress.Commands.add('visitAndWaitFor', (pathname, testId) => {
   cy.visit(pathname);
   cy.findByTestId(testId).should('exist').and('be.visible');
 });
+
+Cypress.Commands.add('runnerScreenShot', () => {
+  cy.screenshot({ capture: 'runner' });
+});
