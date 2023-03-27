@@ -1,5 +1,5 @@
 import { useBrowserSupabase } from '@/hooks/useSupabaseBrowser';
-import { Product } from '@/lib/products';
+import { ProductWithId, ProductWithoutId } from '@/lib/products';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const productsQueryKey = ['products'];
@@ -13,13 +13,13 @@ export function useProducts() {
     queryFn: async () => await supabase.from('products').select('*'),
   });
 
-  async function createProduct(product: Product) {
+  async function createProduct(product: ProductWithoutId) {
     const { data, error } = await supabase.from('products').insert(product).select();
     await queryClient.invalidateQueries(productsQueryKey);
     return { data, error };
   }
 
-  async function updateProduct(product: Product) {
+  async function updateProduct(product: ProductWithId) {
     const { data, error } = await supabase
       .from('products')
       .update(product)
@@ -29,7 +29,7 @@ export function useProducts() {
     return { data, error };
   }
 
-  async function deleteProduct(product: Product) {
+  async function deleteProduct(product: ProductWithId) {
     const { error } = await supabase.from('products').delete().eq('id', product.id);
     await queryClient.invalidateQueries(productsQueryKey);
     return { error };

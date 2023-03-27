@@ -1,5 +1,5 @@
 import { useProducts } from '@/hooks/useProducts';
-import { Product } from '@/lib/products';
+import { ProductWithoutId } from '@/lib/products';
 import { BackendProducts } from '@/utils/routes';
 import { Box, Button, FormControl, FormLabel, Stack, Text } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik';
@@ -9,18 +9,15 @@ export default function AddProduct() {
   const { createProduct } = useProducts();
 
   const router = useRouter();
-  const product: Product = {
+  const product: ProductWithoutId = {
     attributes: '',
     card_type: '',
     description: '',
-    id: NaN,
     rarity: '',
     set: '',
     title: '',
     types: '',
     price: 666,
-    created_at: new Date().toISOString(),
-    inserted_at: new Date().toISOString(),
   };
 
   return (
@@ -39,7 +36,7 @@ export default function AddProduct() {
         >
           <Form>
             <FormControl isReadOnly>
-              <FormLabel htmlFor="id">Id: Automatically assigned </FormLabel>
+              <FormLabel>Id: Automatically assigned</FormLabel>
             </FormControl>
             <FormControl isRequired>
               <Field id="title" name="title" placeholder="Title" />
