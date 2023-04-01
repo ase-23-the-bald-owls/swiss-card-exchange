@@ -34,7 +34,8 @@
     "formik": "^2.2.9",
     "next": "13.2.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@cypress/browserify-preprocessor": "3.0.2",
