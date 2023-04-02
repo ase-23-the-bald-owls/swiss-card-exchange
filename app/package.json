@@ -32,6 +32,7 @@
     "@tanstack/react-query": "4.27.0",
     "@tanstack/react-table": "^8.7.9",
     "formik": "^2.2.9",
+    "jotai": "2.0.3",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

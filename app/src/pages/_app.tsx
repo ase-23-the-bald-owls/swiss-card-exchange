@@ -1,8 +1,11 @@
+// noinspection ES6PreferShortImport
+import { defaultStore } from '../store/defaultStore';
 import { SupabaseProvider } from '@/hooks/useSupabaseBrowser';
 import '@/styles/globals.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient } from '@tanstack/query-core';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { Provider } from 'jotai';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
@@ -21,7 +24,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <SupabaseProvider>
         <QueryClientProvider client={queryClient}>
           <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
+            <Provider store={defaultStore}>
+              <Component {...pageProps} />
+            </Provider>
           </ChakraProvider>
         </QueryClientProvider>
       </SupabaseProvider>
