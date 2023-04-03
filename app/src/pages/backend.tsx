@@ -1,8 +1,12 @@
+import { Pagination } from '@/components/Pagination';
 import TableButton from '@/components/Table/TableButton';
 import { Product } from '@/lib/products';
 import styles from '@/styles/Home.module.css';
+import { ErrorProps } from '@/utils/ErrorProps';
+import { createError, createSuccess } from '@/utils/createServerSideProps';
+import { PaginationProps } from '@/utils/pagination/paginationProps';
+import { createPagination } from '@/utils/pagination/serverPagination';
 import { EditProductRoute } from '@/utils/routes';
-import { createSupabaseServer } from '@/utils/supabase-server';
 import {
   Button,
   Popover,
@@ -18,26 +22,40 @@ import {
   TableContainer,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react';
+import { GetServerSidePropsContext } from 'next';
+import Error from 'next/error';
 import Link from 'next/link';
 
 type HomeProps = {
   products: Product[];
-};
+  pagination: PaginationProps;
+} & ErrorProps;
 
-export async function getServerSideProps() {
-  const supabaseServer = createSupabaseServer();
-  const { data } = await supabaseServer.from('products').select('*');
-  return {
-    props: { products: data },
-  };
+export async function getServerSideProps({ query }: GetServerSidePropsContext) {
+  const { data, error, paginationProps } = await createPagination({
+    entity: 'products',
+    query,
+  });
+  if (error || !data) {
+    console.warn('Error occurred fetching data with supabase, reason: ', error);
+    if (!data) {
+      return createError(404);
+    }
+    return createError(500);
+  }
+
+  return createSuccess({ products: data, pagination: paginationProps });
 }
 
-export default function Backend({ products }: HomeProps) {
+export default function Backend({ products, pagination, code }: HomeProps) {
+  if (code || !products) {
+    const statusCode = code ?? 404;
+    return <Error statusCode={statusCode}></Error>;
+  }
   return (
     <>
       <main className={styles.main} data-testid="index">
@@ -48,6 +66,7 @@ export default function Backend({ products }: HomeProps) {
           </Link>
         </Stack>
 
+        <Pagination {...pagination} />
         <TableContainer>
           <Table variant="striped" colorScheme="teal" size="sm">
             <Thead>
@@ -92,7 +111,7 @@ export default function Backend({ products }: HomeProps) {
             <TableCaption>Product Backlog</TableCaption>
           </Table>
         </TableContainer>
-        <Text>{JSON.stringify(products[1])}</Text>
+        <Pagination {...pagination} />
       </main>
     </>
   );

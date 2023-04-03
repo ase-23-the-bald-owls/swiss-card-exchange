@@ -7,3 +7,5 @@ export const createSupabaseServer = () =>
     headers: () => new Headers(),
     cookies: () => new RequestCookies(new Headers()),
   });
+
+export type SupabaseServerType = ReturnType<typeof createSupabaseServer>;
