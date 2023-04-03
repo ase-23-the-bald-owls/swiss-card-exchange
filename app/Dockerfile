@@ -1,6 +1,9 @@
 FROM node:18-alpine AS base
 
 FROM base AS deps
+
+RUN apk add --no-cache g++ python3 make
+
 WORKDIR /app
 
 COPY package.json package-lock.json ./
