@@ -2,7 +2,14 @@
 import { createProduct } from '../lib/products';
 // noinspection ES6PreferShortImport
 import { wrap } from '../testutils/jotaiUtils';
-import { addProduct, getAllItemLines, removeProduct, resetStore } from './shoppingCart';
+import {
+  addProduct,
+  getAllItemLines,
+  reloadFromStorage,
+  removeProduct,
+  resetStore,
+  shoppingCartLocalStorageKey,
+} from './shoppingCart';
 
 describe('A shoppingCart', () => {
   beforeEach(() => resetStore());
@@ -70,5 +77,38 @@ describe('A shoppingCart', () => {
     const allItems = wrap(getAllItemLines).value;
 
     expect(allItems).to.have.length(0);
+  });
+
+  it('can load data from local storage', () => {
+    const product = createProduct();
+    addProduct(product);
+    addProduct(product);
+
+    resetStore();
+    const allItemsWithEmptyStore = wrap(getAllItemLines).value;
+    expect(allItemsWithEmptyStore).to.have.length(0);
+
+    reloadFromStorage();
+    const allItems = wrap(getAllItemLines).value;
+    expect(allItems).to.have.length(1);
+    const expectedLineItem = JSON.stringify({ product: product, numberOfProducts: 2 });
+    expect(JSON.stringify(wrap(allItems[0]).value)).eq(expectedLineItem);
+  });
+
+  [
+    '{',
+    JSON.stringify({ product: {} }),
+    JSON.stringify([{ product: {} }]),
+    JSON.stringify([{ product: { id: 1 } }]),
+    JSON.stringify([{ product: { id: 1 }, numberOfProducts: -1 }]),
+    JSON.stringify([{ product: { id: 1 }, numberOfProducts: 5.5 }]),
+  ].forEach((notParseable) => {
+    it(`starts with empty shopping cart if localStorage item cannot be parsed for ${notParseable}`, () => {
+      localStorage.setItem(shoppingCartLocalStorageKey, notParseable);
+
+      reloadFromStorage();
+      const allItems = wrap(getAllItemLines).value;
+      expect(allItems).to.have.length(0);
+    });
   });
 });

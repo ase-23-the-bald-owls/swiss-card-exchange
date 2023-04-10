@@ -40,4 +40,18 @@ describe('the shopping cart icon', () => {
       cy.runnerScreenShot();
     });
   });
+
+  it('the items in the shopping cart are persisted and survive a reload', () => {
+    cy.visitAndWaitFor(HomeRoute, 'index');
+
+    cy.get('[data-cy="add-to-cart-button"]').then((buttons) => {
+      cy.wrap(buttons[0]).click();
+      cy.get('[data-cy="shopping-cart-badge"]').contains('1');
+
+      cy.reload().then((_) => {
+        cy.get('[data-cy="shopping-cart-badge"]').contains('1').should('be.visible');
+        cy.runnerScreenShot();
+      });
+    });
+  });
 });
