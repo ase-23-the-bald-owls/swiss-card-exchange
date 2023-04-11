@@ -4,6 +4,7 @@ import noImage from '../../assets/no-image.png';
 import { Product } from '../../lib/products';
 // noinspection ES6PreferShortImport
 import { ProductDetailsRoute } from '../../utils/routes';
+import { AddToCart } from '../AddToCart';
 import { Price } from '../Price';
 import { CardRarityLabel } from '@/components/CardRarityLabel';
 import { Card, CardBody, CardFooter } from '@chakra-ui/card';
@@ -32,9 +33,7 @@ export function ProductTile({ product }: ProductTileProps) {
       <Divider />
       <CardFooter>
         <ButtonGroup spacing="2">
-          <Button variant="solid" colorScheme="blue">
-            Add to cart
-          </Button>
+          <AddToCart product={product} />
           <Link href={`${ProductDetailsRoute}/${product.id}`}>
             <Button variant="ghost" colorScheme="blue" rightIcon={<InfoOutlineIcon />}>
               Details
