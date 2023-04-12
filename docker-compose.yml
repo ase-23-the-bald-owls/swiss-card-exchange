@@ -32,6 +32,14 @@ services:
           - s3.localhost.localstack.cloud
           - mybucket.s3.localhost.localstack.cloud
           - mybucket.s3-website-us-east-1.amazonaws.com
+  mail:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - default
+      - localstack-subnet
 
   supabase-dc:
     build:
