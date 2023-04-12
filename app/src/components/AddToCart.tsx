@@ -1,7 +1,7 @@
 // noinspection ES6PreferShortImport
 import { ProductWithId } from '../lib/products';
 // noinspection ES6PreferShortImport
-import { addProduct } from '../store/shoppingCart';
+import { addProduct } from '../store/shoppingCartStore';
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 
