@@ -1582,13 +1582,12 @@ VALUES ('Witch of the Black Forest',
 UPDATE products
 SET price = ROUND(CAST(random() * 1000 + 1 as numeric), 1) + (ROUND(random()::numeric) * 0.05);
 
-insert into public.payment (payment_type)
-VALUES('Stripe'),('Google Pay'),('Samsung Pay');
-
+insert into public.payment (payment_type,payment_amount)
+VALUES ('Stripe',20),('Google Pay',10),('Samsung Pay',10);
 
 insert into public.customer (user_name,billing_address,shipping_address)
 VALUES('Off3line','alemannenweg 2 4112 Flüh', 'Hauptstrasse 21 4003 Zürich'),('BacLuc','djasjda','hdiuaid');
-
+VALUES ('Off3line','abc street 32 3022 Basel', 'Hauptstrasse 21 4003 Zürich'),('BacLuc','djasjda','hdiuaid');
 insert into public.orders (order_state,payment_id,customer_id)
 VALUES ('completed',1,1), ('canceled',2,1);
 
