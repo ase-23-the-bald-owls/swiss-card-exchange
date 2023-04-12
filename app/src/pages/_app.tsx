@@ -1,7 +1,7 @@
 // noinspection ES6PreferShortImport
 import { defaultStore } from '../store/defaultStore';
+import { ReinitializeShoppingCart } from '@/components/ReinitializeShoppingCart';
 import { SupabaseProvider } from '@/hooks/useSupabaseBrowser';
-import { reloadFromStorage } from '@/store/shoppingCartStore';
 import '@/styles/globals.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient } from '@tanstack/query-core';
@@ -9,15 +9,10 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useEffect } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
   const theme = extendTheme({ initialColorMode: 'dark' });
   const queryClient = new QueryClient();
-
-  useEffect(() => {
-    reloadFromStorage();
-  }, []);
 
   return (
     <>
@@ -31,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={queryClient}>
           <ChakraProvider theme={theme}>
             <Provider store={defaultStore}>
-              <Component {...pageProps} />
+              <ReinitializeShoppingCart>
+                <Component {...pageProps} />
+              </ReinitializeShoppingCart>
             </Provider>
           </ChakraProvider>
         </QueryClientProvider>
