@@ -7,8 +7,6 @@
     "exec": "src/index.js"
   },
   "author": "",
-
-  
   "dependencies": {
     "@supabase/supabase-js": "2.10.0",
     "dotenv": "16.0.3",
