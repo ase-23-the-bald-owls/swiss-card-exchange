@@ -1,7 +1,7 @@
 // noinspection ES6PreferShortImport
 import { defaultStore } from '../store/defaultStore';
 import { SupabaseProvider } from '@/hooks/useSupabaseBrowser';
-import { reloadFromStorage } from '@/store/shoppingCart';
+import { reloadFromStorage } from '@/store/shoppingCartStore';
 import '@/styles/globals.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient } from '@tanstack/query-core';

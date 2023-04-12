@@ -1,6 +1,6 @@
 import Logo from './Logo';
 import { NavBarContainer } from './NavBarContainer';
-import { ShoppingCart } from './ShoppingCart';
+import { ShoppingCartIcon } from './ShoppingCartIcon';
 import { Avatar, HStack, Spacer } from '@chakra-ui/react';
 import React from 'react';
 
@@ -9,7 +9,7 @@ export function NavBar() {
     <NavBarContainer>
       <Logo style={{ alignSelf: 'start' }} />
       <HStack>
-        <ShoppingCart style={{ alignSelf: 'center' }} />
+        <ShoppingCartIcon style={{ alignSelf: 'center' }} />
         <Spacer w={'1'}></Spacer>
         <Avatar
           size={'lg'}

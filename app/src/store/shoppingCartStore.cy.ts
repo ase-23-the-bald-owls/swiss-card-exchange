@@ -9,7 +9,7 @@ import {
   removeProduct,
   resetStore,
   shoppingCartLocalStorageKey,
-} from './shoppingCart';
+} from './shoppingCartStore';
 
 describe('A shoppingCart', () => {
   beforeEach(() => resetStore());
