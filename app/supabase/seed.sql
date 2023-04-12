@@ -1576,13 +1576,22 @@ VALUES ('Witch of the Black Forest',
         'Common', 'Ignition Assault', 'Monster', 'EARTH', 'Fairy / Effect'),
        ('Scareclaw Sclash',
         'This is one of the most iconic and powerful monsters in the game. It''s a Level 8 Dragon-Type monster with 3000 ATK and 2500 DEF. Its effect allows it to make up to three attacks on monsters during each Battle Phase.',
-        'Super Rare', 'Dimension Force', 'Trap', null, null);
+        'Super Rare', 'Dimension Force', 'Trap', null, null),
+        ('test','test description','Super Rare','Assault','Monster',null,null);
 
 UPDATE products
 SET price = ROUND(CAST(random() * 1000 + 1 as numeric), 1) + (ROUND(random()::numeric) * 0.05);
 
-INSERT INTO orders VALUES
-        ('ordered')
+insert into public.payment (payment_type)
+VALUES('Stripe'),('Google Pay'),('Samsung Pay');
 
-INSERT INTO payment VALUES
-        
+
+insert into public.customer (user_name,billing_address,shipping_address)
+VALUES('Off3line','alemannenweg 2 4112 Flüh', 'Hauptstrasse 21 4003 Zürich'),('BacLuc','djasjda','hdiuaid');
+
+insert into public.orders (order_state,payment_id,customer_id)
+VALUES ('completed',1,1), ('canceled',2,1);
+
+insert into public.orderitem (order_id,product_id,quantity)
+VALUES (1,10,100),(1,11,8),(2,43,5),(2,42,1);
+
