@@ -1,5 +1,5 @@
 // noinspection ES6PreferShortImport
-import { ProductWithId } from '../lib/products';
+import { Product, ProductWithId } from '../lib/products';
 // noinspection ES6PreferShortImport
 import { isInput } from '../utils/parsers';
 import { defaultStore } from './defaultStore';
@@ -12,12 +12,12 @@ const lineItemSchema = z.object({
   product: z.object({
     id: z.number().int().min(0),
   }),
-  numberOfProducts: z.number().int().min(1),
+  numberOfProducts: z.number().int().min(0),
 });
 
-type ItemLine = z.infer<typeof lineItemSchema>;
+type ItemLine = z.infer<typeof lineItemSchema> & { product: ProductWithId };
 
-type WriteableLineItemAtom = WritableAtom<ItemLine, [newItem: ItemLine], void>;
+export type WriteableLineItemAtom = WritableAtom<ItemLine, [newItem: ItemLine], void>;
 
 function readItemsFromStorage() {
   if (typeof localStorage === 'undefined') {
@@ -67,10 +67,19 @@ export function reloadFromStorage() {
 
 export const getAllItemLines = atom<WriteableLineItemAtom[]>((get) => get(allItemLines));
 
+export const getAllItemsAsMap = atom(
+  (get) => new Map(get(allItemLines).map((item) => [get(item), item]))
+);
+
 export const numberOfProducts = atom((get) =>
-  get(allItemLines)
-    .map((itemLine) => get(itemLine))
+  Array.from(get(getAllItemsAsMap).keys())
     .map((value) => value.numberOfProducts)
+    .reduce((acc, value) => acc + value, 0)
+);
+
+export const totalShoppingCartPriceAtom = atom((get) =>
+  Array.from(get(getAllItemsAsMap).keys())
+    .map((value) => value.numberOfProducts * (value.product.price ?? 0))
     .reduce((acc, value) => acc + value, 0)
 );
 
@@ -104,16 +113,37 @@ export function removeProduct(productToRemove: ProductWithId) {
   }
   const existingItem = defaultStore.get(itemToRemove);
   if (existingItem.numberOfProducts <= 1) {
-    const newItemList = allItems.filter(
-      (value) => defaultStore.get(value).product.id !== productToRemove.id
-    );
-    defaultStore.set(updateItemLines, newItemList);
-    return;
+    removeAllProducts(productToRemove);
   }
   defaultStore.set(itemToRemove, {
     ...existingItem,
     numberOfProducts: existingItem.numberOfProducts - 1,
   });
+}
+
+export function addProductInfo(product: Product) {
+  const allItems = defaultStore.get(allItemLines);
+  const itemToUpdate = allItems.find(
+    (value) => defaultStore.get(value).product.id === product.id
+  );
+
+  if (!itemToUpdate) {
+    throw Error(`did not find item to add product info, id was: ${product.id}`);
+  }
+  const existingItem = defaultStore.get(itemToUpdate);
+
+  defaultStore.set(itemToUpdate, {
+    ...existingItem,
+    product: product,
+  });
+}
+
+export function removeAllProducts(productToRemove: ProductWithId) {
+  const allItems = defaultStore.get(allItemLines);
+  const newItemList = allItems.filter(
+    (value) => defaultStore.get(value).product.id !== productToRemove.id
+  );
+  defaultStore.set(updateItemLines, newItemList);
 }
 
 function createItemLineFor(product: ProductWithId, numberOfProducts = 1) {
