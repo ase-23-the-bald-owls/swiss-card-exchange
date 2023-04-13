@@ -55,11 +55,16 @@ jobs:
           CYPRESS_BASE_URL: http://localhost:8080
 
       - run: |
+          mkdir /tmp/next-build
           for container in $(docker ps -a -q | xargs -L 1 echo); do
             echo "showing logs of container $container"
             docker ps -a | grep $container
             docker logs $container
             docker logs $container >> /tmp/containers.log
+          
+            if docker exec $container test -d /app/.next; then
+              docker exec $container tar -C /app/.next -czf - . | tar -C /tmp/next-build -xzf -
+            fi  
           done
         if: always()
 
@@ -72,3 +77,4 @@ jobs:
             app/cypress/screenshots/*
             app/cypress/videos/*
             /tmp/containers.log
+            /tmp/next-build
