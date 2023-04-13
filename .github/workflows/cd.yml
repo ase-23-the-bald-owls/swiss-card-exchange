@@ -86,3 +86,12 @@ jobs:
             docker logs $container
           done
         if: always()
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-artifacts
+          path: |
+            app/cypress/screenshots/*
+            app/cypress/videos/*
