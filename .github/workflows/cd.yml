@@ -70,6 +70,11 @@ jobs:
       - run: npm ci
         working-directory: app
 
+      - run: |
+          cat << 'EOF' | sudo tee -a /etc/hosts 
+          127.0.0.1 supabase.local
+          EOF
+
       - run: ./wait-for-supabase.sh
 
       - run: ./wait-for-sce-app.sh
