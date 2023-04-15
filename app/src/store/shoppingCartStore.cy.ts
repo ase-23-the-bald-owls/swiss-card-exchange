@@ -1,7 +1,3 @@
-// noinspection ES6PreferShortImport
-import { createProduct } from '../lib/products';
-// noinspection ES6PreferShortImport
-import { wrap } from '../testutils/jotaiUtils';
 import { defaultStore } from './defaultStore';
 import {
   addProduct,
@@ -15,6 +11,8 @@ import {
   shoppingCartLocalStorageKey,
   totalShoppingCartPriceAtom,
 } from './shoppingCartStore';
+import { createProduct } from '@/lib/products';
+import { wrap } from '@/testutils/jotaiUtils';
 
 describe('A shoppingCart', () => {
   beforeEach(() => resetStore());

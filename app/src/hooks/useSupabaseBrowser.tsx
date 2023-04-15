@@ -1,9 +1,7 @@
 'use client';
 
-// noinspection ES6PreferShortImport
-import type { Database } from '../lib/database.types';
-// noinspection ES6PreferShortImport
-import { createSupabaseBrowser } from '../utils/supabase-browser';
+import type { Database } from '@/lib/database.types';
+import { createSupabaseBrowser } from '@/utils/supabase-browser';
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { createContext, useContext, useMemo, useState } from 'react';
 

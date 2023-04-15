@@ -1,13 +1,12 @@
-// noinspection ES6PreferShortImport
-import { AllEntities } from '../../lib/schema';
-import { isInput } from '../parsers';
-import { SupabaseServerType, createSupabaseServer } from '../supabase-server';
 import {
   PaginationProps,
   PaginationQueryProps,
   pageNumberValidation,
   pageSizeValidation,
 } from './paginationProps';
+import { AllEntities } from '@/lib/schema';
+import { isInput } from '@/utils/parsers';
+import { SupabaseServerType, createSupabaseServer } from '@/utils/supabase-server';
 import { PostgrestError } from '@supabase/supabase-js';
 import { ParsedUrlQuery } from 'querystring';
 import { z } from 'zod';

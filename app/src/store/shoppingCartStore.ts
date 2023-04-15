@@ -1,8 +1,6 @@
-// noinspection ES6PreferShortImport
-import { Product, ProductWithId } from '../lib/products';
-// noinspection ES6PreferShortImport
-import { isInput } from '../utils/parsers';
 import { defaultStore } from './defaultStore';
+import { Product, ProductWithId } from '@/lib/products';
+import { isInput } from '@/utils/parsers';
 import { Atom, WritableAtom, atom } from 'jotai';
 import { z } from 'zod';
 
