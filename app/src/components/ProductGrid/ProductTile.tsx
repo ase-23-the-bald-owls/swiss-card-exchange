@@ -1,12 +1,9 @@
-// noinspection ES6PreferShortImport
-import noImage from '../../assets/no-image.png';
-// noinspection ES6PreferShortImport
-import { Product } from '../../lib/products';
-// noinspection ES6PreferShortImport
-import { ProductDetailsRoute } from '../../utils/routes';
-import { AddToCart } from '../AddToCart';
-import { Price } from '../Price';
+import noImage from '@/assets/no-image.png';
+import { AddToCart } from '@/components/AddToCart';
 import { CardRarityLabel } from '@/components/CardRarityLabel';
+import { Price } from '@/components/Price';
+import { Product } from '@/lib/products';
+import { ProductDetailsRoute } from '@/utils/routes';
 import { Card, CardBody, CardFooter } from '@chakra-ui/card';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Button, ButtonGroup, Divider, Heading, Stack, Text } from '@chakra-ui/react';

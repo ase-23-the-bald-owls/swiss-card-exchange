@@ -1,7 +1,6 @@
 'use client';
 
-// noinspection ES6PreferShortImport
-import { Database } from '../lib/database.types';
+import { Database } from '@/lib/database.types';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 // store as const here that they don't get inlined at build time

@@ -1,6 +1,5 @@
-// noinspection ES6PreferShortImport
-import ChakraThemeProvider from '../testutils/ChakraThemeProvider';
 import { CardRarityEnum, CardRarityLabel } from './CardRarityLabel';
+import ChakraThemeProvider from '@/testutils/ChakraThemeProvider';
 
 const cardRarities = Object.values(CardRarityEnum);
 describe('The CardRarityLabel', () => {

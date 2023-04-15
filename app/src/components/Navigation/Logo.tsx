@@ -1,7 +1,6 @@
-import logo from '../../assets/SCE_logo.png';
-// noinspection ES6PreferShortImport
-import { HomeRoute } from '../../utils/routes';
 import { styles } from './styles';
+import logo from '@/assets/SCE_logo.png';
+import { HomeRoute } from '@/utils/routes';
 import { Box } from '@chakra-ui/react';
 import Image from 'next/image';
 import Link from 'next/link';

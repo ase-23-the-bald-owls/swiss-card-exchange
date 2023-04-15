@@ -1,7 +1,5 @@
-// noinspection ES6PreferShortImport
-import { numberOfProducts } from '../../store/shoppingCartStore';
-// noinspection ES6PreferShortImport
-import { ShoppingCartRoute } from '../../utils/routes';
+import { numberOfProducts } from '@/store/shoppingCartStore';
+import { ShoppingCartRoute } from '@/utils/routes';
 import { Avatar, AvatarBadge, Text } from '@chakra-ui/react';
 import { CartShopping } from '@styled-icons/fa-solid';
 import { useAtom } from 'jotai/react';

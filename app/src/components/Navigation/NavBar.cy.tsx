@@ -1,7 +1,6 @@
-import ChakraThemeProvider from '../../testutils/ChakraThemeProvider';
-// noinspection ES6PreferShortImport
-import { viewports } from '../../testutils/viewports';
 import { NavBar } from './NavBar';
+import ChakraThemeProvider from '@/testutils/ChakraThemeProvider';
+import { viewports } from '@/testutils/viewports';
 
 viewports.forEach((viewPort) => {
   describe(`On ${viewPort.width}x${viewPort.height} the NavBar`, () => {

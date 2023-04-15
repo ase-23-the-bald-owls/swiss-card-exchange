@@ -1,6 +1,5 @@
-// noinspection ES6PreferShortImport
-import { WriteableLineItemAtom } from '../../store/shoppingCartStore';
-import { Price } from '../Price';
+import { Price } from '@/components/Price';
+import { WriteableLineItemAtom } from '@/store/shoppingCartStore';
 import { isInput } from '@/utils/parsers';
 import { Card, CardBody } from '@chakra-ui/card';
 import {

@@ -1,7 +1,6 @@
-// noinspection ES6PreferShortImport
-import { defaultStore } from '../store/defaultStore';
 import { ReinitializeShoppingCart } from '@/components/ReinitializeShoppingCart';
 import { SupabaseProvider } from '@/hooks/useSupabaseBrowser';
+import { defaultStore } from '@/store/defaultStore';
 import '@/styles/globals.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { QueryClient } from '@tanstack/query-core';

@@ -1,10 +1,9 @@
-// noinspection ES6PreferShortImport
-import { isInput } from '../../utils/parsers';
 import {
   PaginationProps,
   PaginationQueryProps,
   pageNumberValidation,
 } from './paginationProps';
+import { isInput } from '@/utils/parsers';
 
 export function clientPagination({ pageNumber, pageSize, totalItems }: PaginationProps) {
   const pageNumberModifier = totalItems % pageSize === 0 ? -1 : 0;
