@@ -24,6 +24,16 @@ describe('the shopping cart overview', () => {
     cy.runnerScreenShot();
   });
 
+  it('shows no checkout button if cart is empty', () => {
+    cy.visitAndWaitFor(HomeRoute, 'index');
+    cy.get('[data-cy="shopping-cart-badge"]').contains('0');
+
+    cy.get('[data-cy="shopping-cart-icon"]').click();
+    cy.location('pathname').should('contain', ShoppingCartRoute);
+    cy.contains('checkout').should('not.exist');
+    cy.runnerScreenShot();
+  });
+
   describe('with items in the shopping cart', () => {
     beforeEach('fill the shopping cart ', () => {
       cy.visitAndWaitFor(HomeRoute, 'index');

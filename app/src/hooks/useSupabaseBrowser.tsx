@@ -3,6 +3,7 @@
 import type { Database } from '@/lib/database.types';
 import { createSupabaseBrowser } from '@/utils/supabase-browser';
 import type { SupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { PostgrestError } from '@supabase/supabase-js';
 import { createContext, useContext, useMemo, useState } from 'react';
 
 type SupabaseContext = {
@@ -35,3 +36,22 @@ export const useBrowserSupabase = () => {
     return context.supabase;
   }
 };
+
+export function throwIfSupabaseFailed(
+  error:
+    | null
+    | PostgrestError
+    | {
+        message: string | undefined;
+        details: string | undefined;
+        hint: string | undefined;
+        code: string | undefined;
+      },
+  data: unknown,
+  entityName: string
+) {
+  if (error || !data) {
+    const message = error?.message ?? `operation on ${entityName} failed`;
+    throw Error(message);
+  }
+}

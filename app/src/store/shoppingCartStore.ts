@@ -1,7 +1,8 @@
 import { defaultStore } from './defaultStore';
 import { Product, ProductWithId } from '@/lib/products';
+import { SimpleWriteableAtom } from '@/store/SimpleWriteableAtom';
 import { isInput } from '@/utils/parsers';
-import { Atom, WritableAtom, atom } from 'jotai';
+import { Atom, atom } from 'jotai';
 import { z } from 'zod';
 
 export const shoppingCartLocalStorageKey = 'shoppingCartItems';
@@ -15,7 +16,7 @@ const lineItemSchema = z.object({
 
 type ItemLine = z.infer<typeof lineItemSchema> & { product: ProductWithId };
 
-export type WriteableLineItemAtom = WritableAtom<ItemLine, [newItem: ItemLine], void>;
+export type WriteableLineItemAtom = SimpleWriteableAtom<ItemLine>;
 
 function readItemsFromStorage() {
   if (typeof localStorage === 'undefined') {
@@ -134,6 +135,10 @@ export function addProductInfo(product: Product) {
     ...existingItem,
     product: product,
   });
+}
+
+export function clearShoppingCart() {
+  defaultStore.set(updateItemLines, []);
 }
 
 export function removeAllProducts(productToRemove: ProductWithId) {
