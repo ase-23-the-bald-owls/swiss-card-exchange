@@ -47,18 +47,21 @@ export interface Database {
         Row: {
           customer_id: number | null;
           id: number;
+          notification_sent: boolean | null;
           order_state: string | null;
           payment_id: number | null;
         };
         Insert: {
           customer_id?: number | null;
           id?: number;
+          notification_sent?: boolean | null;
           order_state?: string | null;
           payment_id?: number | null;
         };
         Update: {
           customer_id?: number | null;
           id?: number;
+          notification_sent?: boolean | null;
           order_state?: string | null;
           payment_id?: number | null;
         };

@@ -1585,10 +1585,10 @@ insert into public.payment (payment_type,payment_amount)
 VALUES ('Stripe',20),('Google Pay',10),('Samsung Pay',10);
 
 insert into public.customer (user_name,billing_address,shipping_address)
-VALUES('Off3line','alemannenweg 2 4112 Flüh', 'Hauptstrasse 21 4003 Zürich'),('BacLuc','djasjda','hdiuaid');
-VALUES ('Off3line','abc street 32 3022 Basel', 'Hauptstrasse 21 4003 Zürich'),('BacLuc','djasjda','hdiuaid');
-insert into public.orders (order_state,payment_id,customer_id)
-VALUES ('completed',1,1), ('canceled',2,1);
+VALUES('blabla@mustermann.ch','suoerstrassse 1 3520 Bern', 'Hauptstrasse 21 4003 Zürich'),('yugioh@suchti.de','djasjda','hdiuaid');
+
+insert into public.orders (order_state,payment_id,customer_id,notification_sent)
+VALUES ('completed',1,1,false), ('canceled',2,1,false),('in delivery',1,2,true);
 
 insert into public.orderitem (order_id,product_id,quantity)
 VALUES (1,10,100),(1,11,8),(2,43,5),(2,42,1);

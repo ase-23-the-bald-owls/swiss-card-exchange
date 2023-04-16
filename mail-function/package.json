@@ -4,12 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "exec": "src/index.js"
+    "exec": "src/index.js",
+    "eslint": "eslint '**/*.{js,jsx,ts,tsx}'",
+    "eslint-check": "eslint --no-fix '**/*.{js,jsx,ts,tsx}' && tsc",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
+    "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
+    "lint": "npm run eslint && npm run format",
+    "lint-check": "npm run eslint-check && npm run format-check"
   },
   "author": "",
   "dependencies": {
     "@supabase/supabase-js": "2.10.0",
     "dotenv": "16.0.3",
-    "dotenv-cli": "7.1.0"
+    "dotenv-cli": "7.1.0",
+    "nodemailer": "^6.9.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.7"
   }
 }
