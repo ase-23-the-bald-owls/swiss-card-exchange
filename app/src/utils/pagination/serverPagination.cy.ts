@@ -1,8 +1,7 @@
-// noinspection ES6PreferShortImport
-import { createProduct } from '../../lib/products';
-import { range } from '../range';
 import { createPagination } from './serverPagination';
+import { createProduct } from '@/lib/products';
 import { PaginationProps } from '@/utils/pagination/paginationProps';
+import { range } from '@/utils/range';
 
 const countErrorValue = 'countError';
 const countError = async (_: unknown) => ({ error: countErrorValue });

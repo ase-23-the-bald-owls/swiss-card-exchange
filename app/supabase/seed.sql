@@ -1577,15 +1577,15 @@ VALUES ('Witch of the Black Forest',
        ('Scareclaw Sclash',
         'This is one of the most iconic and powerful monsters in the game. It''s a Level 8 Dragon-Type monster with 3000 ATK and 2500 DEF. Its effect allows it to make up to three attacks on monsters during each Battle Phase.',
         'Super Rare', 'Dimension Force', 'Trap', null, null);
+
 UPDATE products
 SET price = ROUND(CAST(random() * 1000 + 1 as numeric), 1) + (ROUND(random()::numeric) * 0.05);
 
-insert into public.payment (payment_type)
-VALUES('Stripe'),('Google Pay'),('Samsung Pay');
-
+insert into public.payment (payment_type,payment_amount)
+VALUES ('Stripe',20),('Google Pay',10),('Samsung Pay',10);
 
 insert into public.customer (user_name,billing_address,shipping_address)
-VALUES('blabla@mustermann.ch','alemannenweg 2 4112 Flüh', 'Hauptstrasse 21 4003 Zürich'),('yugioh@suchti.de','djasjda','hdiuaid');
+VALUES('blabla@mustermann.ch','suoerstrassse 1 3520 Bern', 'Hauptstrasse 21 4003 Zürich'),('yugioh@suchti.de','djasjda','hdiuaid');
 
 insert into public.orders (order_state,payment_id,customer_id,notification_sent)
 VALUES ('completed',1,1,false), ('canceled',2,1,false),('in delivery',1,2,true);

@@ -1,9 +1,7 @@
-// noinspection ES6PreferShortImport
-// noinspection ES6PreferShortImport
-import { Product } from '../../lib/products';
-import { PaginationProps } from '../../utils/pagination/paginationProps';
-import { Pagination } from '../Pagination';
 import { ProductTile } from './ProductTile';
+import { Pagination } from '@/components/Pagination';
+import { Product } from '@/lib/products';
+import { PaginationProps } from '@/utils/pagination/paginationProps';
 import { SimpleGrid } from '@chakra-ui/react';
 
 type ProductGridProps = {

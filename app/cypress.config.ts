@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+import path from 'path';
 
 export default defineConfig({
   env: {
@@ -24,6 +25,13 @@ export default defineConfig({
     devServer: {
       framework: 'next',
       bundler: 'webpack',
+      webpackConfig: {
+        resolve: {
+          alias: {
+            '@': path.resolve(__dirname, 'src'),
+          },
+        },
+      },
     },
     setupNodeEvents(on, config) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires

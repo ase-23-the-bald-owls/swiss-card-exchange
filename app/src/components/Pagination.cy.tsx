@@ -1,8 +1,6 @@
-// noinspection ES6PreferShortImport
-import ChakraThemeProvider from '../testutils/ChakraThemeProvider';
-// noinspection ES6PreferShortImport
-import { MockRouter } from '../testutils/mockrouter';
 import { Pagination } from './Pagination';
+import ChakraThemeProvider from '@/testutils/ChakraThemeProvider';
+import { MockRouter } from '@/testutils/mockrouter';
 
 describe('Pagination', () => {
   it('shows disabled buttons when on only page', () => {

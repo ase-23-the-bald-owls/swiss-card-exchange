@@ -1,11 +1,9 @@
-// noinspection ES6PreferShortImport
-import noImage from '../../assets/no-image.png';
-// noinspection ES6PreferShortImport
-import { Product } from '../../lib/products';
-// noinspection ES6PreferShortImport
-import { ProductDetailsRoute } from '../../utils/routes';
-import { Price } from '../Price';
+import noImage from '@/assets/no-image.png';
+import { AddToCart } from '@/components/AddToCart';
 import { CardRarityLabel } from '@/components/CardRarityLabel';
+import { Price } from '@/components/Price';
+import { Product } from '@/lib/products';
+import { ProductDetailsRoute } from '@/utils/routes';
 import { Card, CardBody, CardFooter } from '@chakra-ui/card';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import { Button, ButtonGroup, Divider, Heading, Stack, Text } from '@chakra-ui/react';
@@ -32,9 +30,7 @@ export function ProductTile({ product }: ProductTileProps) {
       <Divider />
       <CardFooter>
         <ButtonGroup spacing="2">
-          <Button variant="solid" colorScheme="blue">
-            Add to cart
-          </Button>
+          <AddToCart product={product} />
           <Link href={`${ProductDetailsRoute}/${product.id}`}>
             <Button variant="ghost" colorScheme="blue" rightIcon={<InfoOutlineIcon />}>
               Details

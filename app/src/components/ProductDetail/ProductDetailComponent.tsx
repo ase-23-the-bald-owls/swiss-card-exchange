@@ -1,13 +1,11 @@
-// noinspection ES6PreferShortImport
-import noImage from '../../assets/no-image.png';
-// noinspection ES6PreferShortImport
-import { Product } from '../../lib/products';
-import { Price } from '../Price';
+import noImage from '@/assets/no-image.png';
+import { AddToCart } from '@/components/AddToCart';
 import { CardRarityLabel } from '@/components/CardRarityLabel';
+import { Price } from '@/components/Price';
+import { Product } from '@/lib/products';
 import { Card, CardBody, CardFooter } from '@chakra-ui/card';
 import {
   Box,
-  Button,
   ButtonGroup,
   Divider,
   Grid,
@@ -67,9 +65,7 @@ export function ProductDetailComponent({ product }: ProductDetailComponentProps)
         <Divider />
         <CardFooter>
           <ButtonGroup spacing="2">
-            <Button variant="ghost" colorScheme="blue">
-              Add to cart
-            </Button>
+            <AddToCart product={product} />
           </ButtonGroup>
         </CardFooter>
       </Card>

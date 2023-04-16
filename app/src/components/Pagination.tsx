@@ -1,10 +1,8 @@
-// noinspection ES6PreferShortImport
-// noinspection ES6PreferShortImport
-import { clientPagination } from '../utils/pagination/clientPagination';
+import { clientPagination } from '@/utils/pagination/clientPagination';
 import {
   PaginationProps,
   PaginationQueryProps,
-} from '../utils/pagination/paginationProps';
+} from '@/utils/pagination/paginationProps';
 import { Button, ButtonGroup } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
