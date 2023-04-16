@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 async function main() {
   const transporter = nodemailer.createTransport({
     port: 1025,
+    secure: true,
   });
 
   const info = await transporter.sendMail({

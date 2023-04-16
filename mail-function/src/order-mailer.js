@@ -32,6 +32,7 @@ async function loadDBData(rec, ord) {
 async function notificationMail(rec, ord) {
   const transporter = nodemailer.createTransport({
     port: 1025,
+    secure: true,
   });
 
   let info;
