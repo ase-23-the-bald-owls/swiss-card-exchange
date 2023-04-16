@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer')
 
 
 // Create a single supabase client for interacting with your database
-const supabase = spb.createClient()
+const supabase = spb.createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) //TODO please watch sensitive files. create a .§env 
 
 const recipients = []
 const orders = []
@@ -20,12 +20,6 @@ async function loadDBData(rec,ord) {
     .eq('notification_sent',false)
     
   
-  
-    
-    // console.log(data);
-    // console.log(error);
-    // console.log(data[0].customer.user_name);
-
     
   data.forEach(element => {
    rec.push(element.customer.user_name)
@@ -68,6 +62,21 @@ async function notificationMail(rec,ord){
 }
 
 
+async function updateSPB(ord){
+
+  for(let i = 0 ; i < ord.length ; i++){
+    const { error } = await supabase
+    .from('orders')
+    .update({ notification_sent: true })
+    .eq('id', ord[i])
+    
+    console.log(error)
+  }
+
+
+}
+
+
 async function main(){
 
 
@@ -75,7 +84,7 @@ async function main(){
 
   await notificationMail(recipients,orders);
 
- //TODO implement a supabase update for the boolean values. 
+  await updateSPB(orders)
 }
 
 main();
