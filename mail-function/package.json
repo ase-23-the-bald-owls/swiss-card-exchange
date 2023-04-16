@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "exec": "src/index.js",
-    "eslint": "eslint '**/*.{js,jsx,ts,tsx}' && tsc",
+    "eslint": "eslint '**/*.{js,jsx,ts,tsx}'",
     "eslint-check": "eslint --no-fix '**/*.{js,jsx,ts,tsx}' && tsc",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
     "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
     "lint": "npm run eslint && npm run format",
-    "fixer": "eslint --fix --ext .js,.jsx .",
     "lint-check": "npm run eslint-check && npm run format-check"
   },
   "author": "",
@@ -27,7 +26,6 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
-    "lint": "^0.8.19",
     "prettier": "^2.8.7"
   }
 }
