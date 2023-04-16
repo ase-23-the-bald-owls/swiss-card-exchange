@@ -20,20 +20,14 @@ async function loadDBData(rec,ord) {
     `)
     .eq('notification_sent',false)
     
-  
-    
   data.forEach(element => {
    rec.push(element.customer.user_name)
    ord.push(element.id)
      
   });
-    
-  
-  
 }
 
 async function notificationMail(rec,ord){
-
 
   const transporter = nodemailer.createTransport({
     port: 1025,
@@ -50,19 +44,11 @@ async function notificationMail(rec,ord){
       html: "<b>Dear Customer, thanks for order with the following info: order nr. " +  ord[i] + "</b>", 
 
     })
-
-    
     console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-    // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  
     console.log(info.response)  
   }
-
-    
-
 }
 
 
@@ -77,12 +63,9 @@ async function updateSPB(ord){
     console.log(error)
   }
 
-
 }
 
-
 async function main(){
-
 
   await loadDBData(recipients,orders);
 
