@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 spb = require('@supabase/supabase-js')
 require('dotenv').config();
 const nodemailer = require('nodemailer')
@@ -57,7 +58,10 @@ async function notificationMail(rec,ord){
     // Preview only available when sending through an Ethereal account
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-      }
+    console.log(info.response)  
+  }
+
+    
 
 }
 
