@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
+  lint-app:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -44,6 +44,32 @@ jobs:
 
       - run: npm run lint-check
         working-directory: app
+
+  lint-mail-function:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-22.04 ]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - run: npm ci
+        working-directory: mail-function
+
+      - run: npm run lint-check
+        working-directory: mail-function
 
   lint-terraform:
     runs-on: ubuntu-22.04
@@ -240,7 +266,8 @@ jobs:
 
   ci-completed:
     needs:
-      - lint
+      - lint-app
+      - lint-mail-function
       - check-types-file
       - tests
       - lint-terraform

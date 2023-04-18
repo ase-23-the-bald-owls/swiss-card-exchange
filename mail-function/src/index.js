@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-const spb = require("@supabase/supabase-js");
-require("dotenv").config();
-const nodemailer = require("nodemailer");
+const spb = require('@supabase/supabase-js');
+require('dotenv').config();
+const nodemailer = require('nodemailer');
 
 // Create a single supabase client for interacting with your database
 const supabase = spb.createClient(
@@ -14,14 +14,14 @@ const orders = [];
 
 async function loadDBData(rec, ord) {
   const { data } = await supabase
-    .from("orders")
+    .from('orders')
     .select(
       `
         *, 
             customer!left (user_name)
     `
     )
-    .eq("notification_sent", false);
+    .eq('notification_sent', false);
 
   data.forEach((element) => {
     rec.push(element.customer.user_name);
@@ -39,18 +39,17 @@ async function notificationMail(rec, ord) {
 
   for (let i = 0; i < rec.length; i++) {
     info = await transporter.sendMail({
-      from: "info@sce.ch",
+      from: 'info@sce.ch',
       to: rec[i],
-      subject: "Your order status",
+      subject: 'Your order status',
       text:
-        "Dear Customer, thanks for order with the following info: order nr.  " +
-        ord[i],
+        'Dear Customer, thanks for order with the following info: order nr.  ' + ord[i],
       html:
-        "<b>Dear Customer, thanks for order with the following info: order nr. " +
+        '<b>Dear Customer, thanks for order with the following info: order nr. ' +
         ord[i] +
-        "</b>",
+        '</b>',
     });
-    console.log("Message sent: %s", info.messageId);
+    console.log('Message sent: %s', info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
     console.log(info.response);
@@ -60,9 +59,9 @@ async function notificationMail(rec, ord) {
 async function updateSPB(ord) {
   for (let i = 0; i < ord.length; i++) {
     const { error } = await supabase
-      .from("orders")
+      .from('orders')
       .update({ notification_sent: true })
-      .eq("id", ord[i]);
+      .eq('id', ord[i]);
 
     console.log(error);
   }
