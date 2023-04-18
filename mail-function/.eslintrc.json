@@ -1,0 +1,10 @@
+{
+  "env": {
+    "commonjs": true,
+    "es2021": true
+  },
+  "extends": ["standard", "plugin:prettier/recommended"],
+  "rules": {
+    "no-unused-vars": "error"
+  }
+}
