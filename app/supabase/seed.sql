@@ -1579,7 +1579,8 @@ VALUES ('Witch of the Black Forest',
         'Super Rare', 'Dimension Force', 'Trap', null, null);
 
 UPDATE products
-SET price = ROUND(CAST(random() * 1000 + 1 as numeric), 1) + (ROUND(random()::numeric) * 0.05);
+SET price = ROUND(CAST(random() * 1000 + 1 as numeric), 1) + (ROUND(random()::numeric) * 0.05)
+WHERE true;
 
 insert into public.payment (payment_type, payment_amount)
 VALUES ('Stripe', 20),
