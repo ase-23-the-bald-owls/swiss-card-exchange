@@ -85,6 +85,57 @@ jobs:
 
       - run: terraform validate
 
+  check-types-file:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.15.0'
+
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - uses: actions/cache@v3
+        with:
+          path: app/.next
+          key: ${{ runner.os }}-next
+          restore-keys: |
+            ${{ runner.os }}-next
+
+      - name: Cache Docker images.
+        uses: ScribeMD/docker-cache@0.3.0
+        with:
+          key: docker-${{ runner.os }}
+
+      - name: Copy .env file
+        run: cp .env.example .env.local
+        working-directory: app
+
+      - run: npm ci
+        working-directory: app
+
+      - name: Supabase start
+        run: npm run supabase start
+        working-directory: app
+
+      - name: generate types
+        run: npm run update-types
+        working-directory: app
+
+      - name: generate types
+        run: npm run format
+        working-directory: app
+
+      - name: diff types
+        run: git diff --exit-code src/lib/database.types.ts
+        working-directory: app
+
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -190,6 +241,7 @@ jobs:
   ci-completed:
     needs:
       - lint
+      - check-types-file
       - tests
       - lint-terraform
       - validate-terraform
