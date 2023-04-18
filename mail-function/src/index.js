@@ -18,13 +18,13 @@ async function loadDBData(rec, ord) {
     .select(
       `
         *, 
-            customer!left (user_name)
+            customer!left (email)
     `
     )
     .eq('notification_sent', false);
 
   data.forEach((element) => {
-    rec.push(element.customer.user_name);
+    rec.push(element.customer.email);
     ord.push(element.id);
   });
 }

@@ -171,6 +171,10 @@ describe('the checkout process', () => {
       Object.entries(billingAddress).forEach(([, value]) => {
         cy.contains(value).should('not.exist');
       });
+      cy.get('button').contains('Submit Order').click();
+
+      cy.get('h2').contains('Order successfully submitted');
+      cy.get('[data-cy="shopping-cart-badge"]').contains('0');
     });
   });
 });

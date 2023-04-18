@@ -1,8 +1,10 @@
 import { throwIfSupabaseFailed, useBrowserSupabase } from '@/hooks/useSupabaseBrowser';
+import { AddressWithId, AddressWithoutId } from '@/lib/addresses';
 import { CustomerWithId, CustomerWithoutId } from '@/lib/customers';
 import { OrderItemWithId, OrderItemWithoutId } from '@/lib/orderItems';
 import { OrderState, OrderWithId, OrderWithoutId } from '@/lib/orders';
 import {
+  Address,
   getBillingAddressAtom,
   paymentAmountAtom,
   shippingAddressAtom,
@@ -23,7 +25,19 @@ export function useSubmitOrder() {
   const supabaseClient = useBrowserSupabase();
 
   async function submitOrder() {
-    const insertedCustomer = await insertCustomer();
+    const insertedShippingAddress = await insertAddress(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      removeEmailProperty(shippingAddress!)
+    );
+    const insertedBillingAddress = await insertAddress(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      removeEmailProperty(billingAddress!)
+    );
+
+    const insertedCustomer = await insertCustomer(
+      insertedShippingAddress,
+      insertedBillingAddress
+    );
 
     const insertedOrder = await insertOrder(insertedCustomer);
 
@@ -33,6 +47,8 @@ export function useSubmitOrder() {
     clearShoppingCart();
 
     return {
+      shippingAddress: insertedShippingAddress,
+      billingAddress: insertedBillingAddress,
       customer: insertedCustomer,
       order: insertedOrder,
       orderItems: insertedOrderItems,
@@ -43,21 +59,31 @@ export function useSubmitOrder() {
     submitOrder,
   };
 
-  async function insertCustomer() {
+  async function insertAddress(address: Address) {
+    const addressToInsert: AddressWithoutId = {
+      ...address,
+      zip_code: address.zipCode,
+    };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete addressToInsert.zipCode;
+    const { data: maybeAddress, error: insertAddressError } = await supabaseClient
+      .from('addresses')
+      .insert(addressToInsert)
+      .select();
+    throwIfSupabaseFailed(insertAddressError, maybeAddress, 'address');
+    return maybeAddress?.at(0) as never as AddressWithId;
+  }
+
+  async function insertCustomer(
+    insertedShippingAddress: AddressWithId,
+    insertedBillingAddress: AddressWithId
+  ) {
     const customer: CustomerWithoutId = {
-      billing_address: `
-      ${billingAddress?.firstname} ${billingAddress?.name}
-      ${billingAddress?.company}
-      ${billingAddress?.address}
-      ${billingAddress?.zipCode} ${billingAddress?.city}
-      `,
-      shipping_address: `
-      ${shippingAddress?.firstname} ${shippingAddress?.name}
-      ${shippingAddress?.company}
-      ${shippingAddress?.address}
-      ${shippingAddress?.zipCode} ${shippingAddress?.city}
-      `,
-      user_name: shippingAddress?.email,
+      billing_address_id: insertedBillingAddress.id,
+      shipping_address_id: insertedShippingAddress.id,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      email: shippingAddress!.email,
     };
     const { data: maybeCustomer, error: insertCustomerError } = await supabaseClient
       .from('customer')
@@ -99,4 +125,14 @@ export function useSubmitOrder() {
         } as OrderItemWithoutId)
     );
   }
+}
+
+function removeEmailProperty(shippingAddress: Address) {
+  const addressWithoutEmail = {
+    ...shippingAddress,
+  } as Address;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  delete addressWithoutEmail.email;
+  return addressWithoutEmail;
 }
