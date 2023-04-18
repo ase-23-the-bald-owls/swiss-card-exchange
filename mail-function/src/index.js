@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-spb = require("@supabase/supabase-js");
+const spb = require("@supabase/supabase-js");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 
