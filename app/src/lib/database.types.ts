@@ -69,14 +69,17 @@ export interface Database {
       payment: {
         Row: {
           id: number;
+          payment_amount: number;
           payment_type: string | null;
         };
         Insert: {
           id?: number;
+          payment_amount: number;
           payment_type?: string | null;
         };
         Update: {
           id?: number;
+          payment_amount?: number;
           payment_type?: string | null;
         };
       };
