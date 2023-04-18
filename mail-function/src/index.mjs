@@ -1,24 +1,21 @@
-#!/usr/bin/env node
-const spb = require('@supabase/supabase-js');
-require('dotenv').config();
-const nodemailer = require('nodemailer');
+#!/usr/bin/env node --input-type=module - "$@" > "$0"
+import { createClient } from '@supabase/supabase-js';
+import { config } from 'dotenv';
+import { createTransport } from 'nodemailer';
+
+config();
 
 // Create a single supabase client for interacting with your database
-const supabase = spb.createClient(
+const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-async function main() {
-  const dbData = await loadDBData();
+const dbData = await loadDBData();
 
-  await notificationMail(dbData);
+await notificationMail(dbData);
 
-  await updateSPB(dbData);
-}
-
-// noinspection JSIgnoredPromiseFromCall
-main();
+await updateSPB(dbData);
 
 async function loadDBData() {
   const { data, error } = await supabase
@@ -40,7 +37,7 @@ async function loadDBData() {
 }
 
 async function notificationMail(orders) {
-  const transporter = nodemailer.createTransport({
+  const transporter = createTransport({
     port: 1025,
     secure: false,
   });
@@ -59,6 +56,7 @@ async function notificationMail(orders) {
     console.log(info.response);
   }
 }
+
 async function updateSPB(orders) {
   for (const [orderId] of orders) {
     const { error } = await supabase
