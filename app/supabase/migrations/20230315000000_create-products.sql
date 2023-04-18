@@ -12,7 +12,6 @@ CREATE TABLE products
     attributes  varchar(100),
     types       varchar(100),
     price       float,
-    inserted_at timestamp with time zone default timezone('utc'::text, now()) not null,
     created_at  timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
