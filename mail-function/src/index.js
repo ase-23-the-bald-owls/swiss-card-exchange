@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 const supabase = spb.createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-); // TODO please watch sensitive files. create a .§env
+);
 
 const recipients = [];
 const orders = [];
@@ -57,11 +57,11 @@ async function notificationMail(rec, ord) {
 }
 
 async function updateSPB(ord) {
-  for (let i = 0; i < ord.length; i++) {
+  for (const element of ord) {
     const { error } = await supabase
       .from('orders')
       .update({ notification_sent: true })
-      .eq('id', ord[i]);
+      .eq('id', element);
 
     console.log(error);
   }
