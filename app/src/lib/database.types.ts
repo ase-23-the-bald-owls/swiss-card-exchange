@@ -90,7 +90,6 @@ export interface Database {
           created_at: string;
           description: string | null;
           id: number;
-          inserted_at: string;
           price: number | null;
           rarity: string | null;
           set: string | null;
@@ -103,7 +102,6 @@ export interface Database {
           created_at?: string;
           description?: string | null;
           id?: number;
-          inserted_at?: string;
           price?: number | null;
           rarity?: string | null;
           set?: string | null;
@@ -116,7 +114,6 @@ export interface Database {
           created_at?: string;
           description?: string | null;
           id?: number;
-          inserted_at?: string;
           price?: number | null;
           rarity?: string | null;
           set?: string | null;
