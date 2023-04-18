@@ -9,6 +9,17 @@ const supabase = spb.createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+async function main() {
+  const dbData = await loadDBData();
+
+  await notificationMail(dbData);
+
+  await updateSPB(dbData);
+}
+
+// noinspection JSIgnoredPromiseFromCall
+main();
+
 async function loadDBData() {
   const { data, error } = await supabase
     .from('orders')
@@ -48,7 +59,6 @@ async function notificationMail(orders) {
     console.log(info.response);
   }
 }
-
 async function updateSPB(orders) {
   for (const [orderId] of orders) {
     const { error } = await supabase
@@ -59,13 +69,3 @@ async function updateSPB(orders) {
     console.log(error);
   }
 }
-
-async function main() {
-  const dbData = await loadDBData();
-
-  await notificationMail(dbData);
-
-  await updateSPB(dbData);
-}
-
-main();
