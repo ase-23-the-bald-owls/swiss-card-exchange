@@ -1581,15 +1581,29 @@ VALUES ('Witch of the Black Forest',
 UPDATE products
 SET price = ROUND(CAST(random() * 1000 + 1 as numeric), 1) + (ROUND(random()::numeric) * 0.05);
 
-insert into public.payment (payment_type,payment_amount)
-VALUES ('Stripe',20),('Google Pay',10),('Samsung Pay',10);
+insert into public.payment (payment_type, payment_amount)
+VALUES ('Stripe', 20),
+       ('Google Pay', 10),
+       ('Samsung Pay', 10);
 
-insert into public.customer (user_name,billing_address,shipping_address)
-VALUES('blabla@mustermann.ch','suoerstrassse 1 3520 Bern', 'Hauptstrasse 21 4003 Zürich'),('yugioh@suchti.de','djasjda','hdiuaid');
+INSERT INTO public.addresses(id, firstname, name, company, address, zip_code, city)
+VALUES (1, 'Hans', 'Müller', 'Supercompany', 'My street 5', '4000', 'Basel'),
+       (2, 'Fritz', 'Kalbermatter', 'Bettercompany', 'My street 6', '8000', 'Zürich'),
+       (3, 'Erika', 'Muster', null, 'Best street 5', '8000', 'Zürich')
+;
+ALTER SEQUENCE addresses_id_seq RESTART WITH 4;
 
-insert into public.orders (order_state,payment_id,customer_id,notification_sent)
-VALUES ('completed',1,1,false), ('canceled',2,1,false),('in delivery',1,2,true);
+insert into public.customer (email, billing_address_id, shipping_address_id)
+VALUES ('blabla@mustermann.ch', 1, 2),
+       ('yugioh@suchti.de', 3, 3);
 
-insert into public.orderitem (order_id,product_id,quantity)
-VALUES (1,10,100),(1,11,8),(2,43,5),(2,42,1);
+insert into public.orders (order_state, payment_id, customer_id, notification_sent)
+VALUES ('completed', 1, 1, false),
+       ('canceled', 2, 1, false),
+       ('in delivery', 1, 2, true);
 
+insert into public.orderitem (order_id, product_id, quantity)
+VALUES (1, 10, 100),
+       (1, 11, 8),
+       (2, 43, 5),
+       (2, 42, 1);

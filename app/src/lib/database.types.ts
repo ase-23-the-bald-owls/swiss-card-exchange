@@ -3,24 +3,53 @@ export type Json = string | number | boolean | null | { [key: string]: Json } | 
 export interface Database {
   public: {
     Tables: {
-      customer: {
+      addresses: {
         Row: {
-          billing_address: string | null;
+          address: string;
+          city: string;
+          company: string | null;
+          firstname: string;
           id: number;
-          shipping_address: string | null;
-          user_name: string | null;
+          name: string;
+          zip_code: string;
         };
         Insert: {
-          billing_address?: string | null;
+          address: string;
+          city: string;
+          company?: string | null;
+          firstname: string;
           id?: number;
-          shipping_address?: string | null;
-          user_name?: string | null;
+          name: string;
+          zip_code: string;
         };
         Update: {
-          billing_address?: string | null;
+          address?: string;
+          city?: string;
+          company?: string | null;
+          firstname?: string;
           id?: number;
-          shipping_address?: string | null;
-          user_name?: string | null;
+          name?: string;
+          zip_code?: string;
+        };
+      };
+      customer: {
+        Row: {
+          billing_address_id: number;
+          email: string;
+          id: number;
+          shipping_address_id: number;
+        };
+        Insert: {
+          billing_address_id: number;
+          email: string;
+          id?: number;
+          shipping_address_id: number;
+        };
+        Update: {
+          billing_address_id?: number;
+          email?: string;
+          id?: number;
+          shipping_address_id?: number;
         };
       };
       orderitem: {
