@@ -9,11 +9,8 @@ const supabase = spb.createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-const recipients = [];
-const orders = [];
-
-async function loadDBData(rec, ord) {
-  const { data } = await supabase
+async function loadDBData() {
+  const { data, error } = await supabase
     .from('orders')
     .select(
       `
@@ -23,31 +20,27 @@ async function loadDBData(rec, ord) {
     )
     .eq('notification_sent', false);
 
-  data.forEach((element) => {
-    rec.push(element.customer.email);
-    ord.push(element.id);
-  });
+  if (error || !data || !Array.isArray(data)) {
+    throw Error(
+      error?.message || `data returned was not valid, was: ${JSON.stringify(data)}`
+    );
+  }
+  return data.map((order) => [order.id, order.customer.email]);
 }
 
-async function notificationMail(rec, ord) {
+async function notificationMail(orders) {
   const transporter = nodemailer.createTransport({
     port: 1025,
     secure: false,
   });
 
-  let info;
-
-  for (let i = 0; i < rec.length; i++) {
-    info = await transporter.sendMail({
+  for (const [orderId, email] of orders) {
+    const info = await transporter.sendMail({
       from: 'info@sce.ch',
-      to: rec[i],
+      to: email,
       subject: 'Your order status',
-      text:
-        'Dear Customer, thanks for order with the following info: order nr.  ' + ord[i],
-      html:
-        '<b>Dear Customer, thanks for order with the following info: order nr. ' +
-        ord[i] +
-        '</b>',
+      text: `Dear Customer, thanks for order with the following info: order nr.  ${orderId}`,
+      html: `<b>Dear Customer, thanks for order with the following info: order nr. ${orderId}</b>`,
     });
     console.log('Message sent: %s', info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -56,23 +49,23 @@ async function notificationMail(rec, ord) {
   }
 }
 
-async function updateSPB(ord) {
-  for (const element of ord) {
+async function updateSPB(orders) {
+  for (const [orderId] of orders) {
     const { error } = await supabase
       .from('orders')
       .update({ notification_sent: true })
-      .eq('id', element);
+      .eq('id', orderId);
 
     console.log(error);
   }
 }
 
 async function main() {
-  await loadDBData(recipients, orders);
+  const dbData = await loadDBData();
 
-  await notificationMail(recipients, orders);
+  await notificationMail(dbData);
 
-  await updateSPB(orders);
+  await updateSPB(dbData);
 }
 
 main();
