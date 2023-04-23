@@ -17,6 +17,7 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME:-localstack-persistence}:/var/lib/localstack"
       - "${DOCKER_SOCK_PATH:-/var/run/docker.sock}:/var/run/docker.sock"
+      - "./localstack-data:/var/lib/localstack"
     networks:
       default:
         aliases:

@@ -5,7 +5,7 @@ terraform {
       version = "4.57.0"
     }
     archive = {
-      source = "hashicorp/archive"
+      source  = "hashicorp/archive"
       version = "2.3.0"
     }
   }
@@ -23,13 +23,19 @@ provider "aws" {
 
   endpoints {
     # use endpoint of localstack
-    ec2           = "http://localhost:4566"
-    ecs           = "http://localhost:4566"
-    iam           = "http://localhost:4566"
-    s3            = "http://localhost:4566"
-    s3api         = "http://localhost:4566"
-    glacier       = "http://localhost:4566"
-    sns           = "http://localhost:4566"
-    organizations = "http://localhost:4566"
+    ec2              = "http://localhost:4566"
+    ecs              = "http://localhost:4566"
+    iam              = "http://localhost:4566"
+    s3               = "http://localhost:4566"
+    s3api            = "http://localhost:4566"
+    glacier          = "http://localhost:4566"
+    sns              = "http://localhost:4566"
+    organizations    = "http://localhost:4566"
+    lambda           = "http://localhost:4566"
+    cloudwatch       = "http://localhost:4566"
+    cloudwatchevents = "http://localhost:4566"
+    cloudwatchlog    = "http://localhost:4566"
+    cloudwatchlogs   = "http://localhost:4566"
+
   }
 }
