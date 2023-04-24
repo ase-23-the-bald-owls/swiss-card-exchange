@@ -78,6 +78,7 @@ jobs:
           REPO_OWNER: ${{ steps.repo-owner.outputs.result }}
           VERSION: local
           SCE_DOCKERFILE_PATH: app/Dockerfile
+          MAIL_FUNCTION_DOCKERFILE_PATH: mail-function/Dockerfile
 
   build-image:
     runs-on: ubuntu-latest

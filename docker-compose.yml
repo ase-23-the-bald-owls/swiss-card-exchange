@@ -72,7 +72,7 @@ services:
   mail-function:
     build:
       context: mail-function
-      dockerfile: ${SCE_DOCKERFILE_PATH:-Dockerfile}
+      dockerfile: ${MAIL_FUNCTION_DOCKERFILE_PATH:-Dockerfile}
     image: ${CONTAINER_REGISTRY:-ghcr.io}/${REPO_OWNER:-ase-23-the-bald-owls}/${REPO_NAME:-swiss-card-exchange}/sce-mail-function:${VERSION:-local}
     profiles:
       - "local-run"

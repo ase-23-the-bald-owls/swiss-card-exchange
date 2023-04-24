@@ -49,6 +49,8 @@ jobs:
 
       - run: ./wait-for-sce-app.sh
 
+      - run: docker compose run mail-function
+
       - run: npm run cypress-run
         working-directory: app
         env:
