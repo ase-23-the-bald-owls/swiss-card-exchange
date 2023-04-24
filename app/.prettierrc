@@ -7,5 +7,7 @@
   "printWidth": 90,
   "jsonRecursiveSort": true,
   "importOrderSeparation": true,
-  "importOrderSortSpecifiers": true
+  "importOrderSortSpecifiers": true,
+  "language": "postgresql",
+  "keywordCase": "upper"
 }
