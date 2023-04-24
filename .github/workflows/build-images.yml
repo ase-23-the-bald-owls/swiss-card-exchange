@@ -1,8 +1,20 @@
 name: "build images"
 on:
   workflow_dispatch:
+    inputs:
+      trigger:
+        type: string
+        default: 'workflow_dispatch'
   workflow_call:
-
+    inputs:
+      trigger:
+        type: string
+        default: 'workflow_call'
+  push:
+    paths:
+      - '.github/workflows/build-images.yml'
+      - '**/Dockerfile'
+      - 'docker-compose.yml'
 
 env:
   DOCKER_BUILDKIT: 1
@@ -93,10 +105,55 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: actions/github-script@v6
+        id: should-build-arm
+        with:
+          result-encoding: string
+          script: |
+            const moreThanOneTag = JSON.parse('${{ env.tags }}').length > 1
+            console.log('moreThanOneTag', moreThanOneTag)
+            const isWorkflowDispatch = '${{ inputs.trigger }}' === 'workflow_dispatch'
+            console.log('isWorkflowDispatch', isWorkflowDispatch)
+            const isWorkflowCall = '${{ inputs.trigger }}' === 'workflow_call'
+            console.log('isWorkflowCall', isWorkflowCall)
+            const isDirectPush = (context.eventName === 'push' && !isWorkflowCall)
+            console.log('isDirectPush', isDirectPush)
+            return (moreThanOneTag || isWorkflowDispatch || isDirectPush) ? 'true' : 'false'
+
+      - uses: actions/github-script@v6
+        id: architectures
+        with:
+          script: |
+            const initialArchs = ['amd64']
+            if (${{ steps.should-build-arm.outputs.result }}) {
+              return [...initialArchs, 'arm64']
+            }
+            return initialArchs
+
+      - uses: actions/github-script@v6
+        id: architecture-config
+        with:
+          script: |
+            const plain = JSON.parse('${{ steps.architectures.outputs.result }}')
+            return {
+              plain,
+              withOsPrefix: plain.map(arch => `linux/${arch}`)
+            }
+
       - run: |
+          echo "inputs:"
+          cat <<-HEREDOC
+          ${{ toJSON(inputs) }}
+          HEREDOC
+          
           echo "build config:"
           cat <<-HEREDOC
           ${{ toJSON(matrix.build-config) }}
+          HEREDOC
+          
+          echo "architecture-config:"
+          cat <<-HEREDOC
+          ${{ steps.architecture-config.outputs.result }}
           HEREDOC
           
           echo "build tags:"
@@ -112,7 +169,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         with:
-          platforms: "arm64, amd64"
+          platforms: ${{ join(fromJSON(steps.architecture-config.outputs.result).plain) }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -137,7 +194,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ join(fromJSON(steps.architecture-config.outputs.result).withOsPrefix) }}
           file: ${{ matrix.build-config.dockerfile }}
           tags: ${{ join(fromJSON(steps.expand-tags.outputs.result)) }}
           context: ${{ matrix.build-config.context }}
