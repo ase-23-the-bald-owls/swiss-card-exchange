@@ -1,5 +1,7 @@
 import { createPagination } from './serverPagination';
 import { createProduct } from '@/lib/products';
+import { createFakeNextRequestContext } from '@/testutils/fakeNextRequestContext';
+import { createFakeSupabaseClient } from '@/testutils/fakeSupabaseClient';
 import { PaginationProps } from '@/utils/pagination/paginationProps';
 import { range } from '@/utils/range';
 
@@ -20,7 +22,9 @@ describe('createPagination', () => {
     const pagination = await createPagination({
       entity: 'products',
       query: {},
+      supabaseServerParam: createFakeSupabaseClient(),
       countPromise: countError,
+      nextContext: createFakeNextRequestContext(),
     });
 
     expect(pagination.error).eq(countErrorValue);
@@ -30,8 +34,10 @@ describe('createPagination', () => {
     const pagination = await createPagination({
       entity: 'products',
       query: {},
+      supabaseServerParam: createFakeSupabaseClient(),
       countPromise: countSuccess(100),
       fetchPromise: fetchError,
+      nextContext: createFakeNextRequestContext(),
     });
 
     expect(pagination.error).eq(fetchErrorValue);
@@ -44,10 +50,12 @@ describe('createPagination', () => {
     const pagination = await createPagination({
       entity: 'products',
       query: {},
+      supabaseServerParam: createFakeSupabaseClient(),
       countPromise: countSuccess(count),
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       fetchPromise: fetchSuccess(10),
+      nextContext: createFakeNextRequestContext(),
     });
 
     expect(pagination.error).eq(undefined);
@@ -128,10 +136,12 @@ describe('createPagination', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         query: paramPagination,
+        supabaseServerParam: createFakeSupabaseClient(),
         countPromise: countSuccess(count),
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         fetchPromise: fetchSuccess(param.expectedPagination.pageSize),
+        nextContext: createFakeNextRequestContext(),
       });
 
       expect(pagination.error).eq(undefined);

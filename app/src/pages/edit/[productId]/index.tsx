@@ -14,12 +14,13 @@ type EditProductProperties = {
   product?: Product;
 } & ErrorProps;
 
-export async function getServerSideProps({ params }: GetServerSidePropsContext) {
+export async function getServerSideProps(nextContext: GetServerSidePropsContext) {
+  const { params } = nextContext;
   if (!params) {
     return createError(400);
   }
   const productId = params['productId'];
-  const supabaseServer = createSupabaseServer();
+  const supabaseServer = createSupabaseServer(nextContext);
   const { data } = await supabaseServer.from('products').select('*').eq('id', productId);
   if (data === null || data === undefined || !Array.isArray(data)) {
     return createError(500);
