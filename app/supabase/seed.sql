@@ -1,6 +1,27 @@
 -- noinspection SqlNoDataSourceInspectionForFile
 -- noinspection SqlResolveForFile @ any/"auth"
 
+INSERT INTO auth.users (instance_id, id, aud, role, email, encrypted_password, confirmation_token,
+                        raw_app_meta_data,
+                        raw_user_meta_data, is_super_admin, created_at, updated_at, email_change,
+                        email_change_token_new, recovery_token)
+VALUES ('00000000-0000-0000-0000-000000000000', 'cdec563f-8766-4826-bdaa-7e6e629224d5', 'authenticated',
+        'authenticated', 'user1@example.com', '$2a$10$zxJtm53nPMd7PRrShiaqGeEyQANG8sKMvGKvRU5eWJgkwHbeODr2C', '', '{
+    "provider": "email",
+    "providers": [
+      "email"
+    ]
+  }', '{}', null, now(), now(), '', '', '');
+
+
+
+INSERT INTO auth.identities (id, user_id, identity_data, provider, created_at, updated_at)
+VALUES ('cdec563f-8766-4826-bdaa-7e6e629224d5', 'cdec563f-8766-4826-bdaa-7e6e629224d5', '{
+  "sub": "cdec563f-8766-4826-bdaa-7e6e629224d5",
+  "email": "user1@example.com"
+}', 'email', now(), now());
+
+
 insert into public.products (title, description, rarity, set, card_type, attributes, types)
 VALUES ('Witch of the Black Forest',
         'This is one of the most iconic and powerful monsters in the game. It''s a Level 8 Dragon-Type monster with 3000 ATK and 2500 DEF. Its effect allows it to make up to three attacks on monsters during each Battle Phase.',

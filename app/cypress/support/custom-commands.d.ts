@@ -1,5 +1,4 @@
 // keep file name different from any TS file within ~/cypress/support so they dont collide on compilation
-
 // in cypress/support/index.d.ts
 // load type definitions that come with Cypress module
 /// <reference types="cypress" />
@@ -20,5 +19,17 @@ declare namespace Cypress {
      * { capture: 'runner' }
      */
     runnerScreenShot(): void;
+
+    /**
+     * Performs a logout if a user is logged in
+     */
+    logout(): void;
+
+    /**
+     * Performs a login with username and password
+     * @param username
+     * @param password
+     */
+    login(username: string, password: string): void;
   }
 }
