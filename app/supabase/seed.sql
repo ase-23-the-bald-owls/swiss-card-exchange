@@ -1,6 +1,9 @@
 -- noinspection SqlNoDataSourceInspectionForFile
 -- noinspection SqlResolveForFile @ any/"auth"
 
+CALL auth.sce_create_user('user1@example.com');
+
+
 insert into public.products (title, description, rarity, set, card_type, attributes, types)
 VALUES ('Witch of the Black Forest',
         'This is one of the most iconic and powerful monsters in the game. It''s a Level 8 Dragon-Type monster with 3000 ATK and 2500 DEF. Its effect allows it to make up to three attacks on monsters during each Battle Phase.',
