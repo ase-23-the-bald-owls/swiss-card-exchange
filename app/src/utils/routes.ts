@@ -4,6 +4,10 @@ export const EditProductRoute = '/edit';
 export const BackendProducts = '/backend';
 export const ShoppingCartRoute = '/shoppingCart';
 
+export const LoginRoute = '/login';
+
+export const ProfileRoute = '/profile';
+
 export const ShippingAddressRoute = '/checkout/shippingAddress';
 
 export const BillingAddressRoute = '/checkout/billingAddress';
