@@ -21,7 +21,7 @@ COPY --from=getenvsubst /usr/local/bin/envsubst /usr/local/bin/envsubst
 RUN mkdir -p /app/volumes/ /tmp/pg-init
 
 COPY supabase/app/ /app
-COPY app/supabase/migrations/20230315000000_create-products.sql /app/volumes/db/migrations/ZZ01-schema.sql
+COPY app/supabase/migrations/20230315000000_create_schema.sql /app/volumes/db/migrations/ZZ01-schema.sql
 COPY app/supabase/seed.sql /app/volumes/db/migrations/ZZ99-seed.sql
 
 COPY --from=supabase/postgres:15.1.0.53 /docker-entrypoint-initdb.d /tmp/pg-init
