@@ -35,10 +35,12 @@ type HomeProps = {
   pagination: PaginationProps;
 } & ErrorProps;
 
-export async function getServerSideProps({ query }: GetServerSidePropsContext) {
+export async function getServerSideProps(nextContext: GetServerSidePropsContext) {
+  const { query } = nextContext;
   const { data, error, paginationProps } = await createPagination({
     entity: 'products',
     query,
+    nextContext,
   });
   if (error || !data) {
     console.warn('Error occurred fetching data with supabase, reason: ', error);

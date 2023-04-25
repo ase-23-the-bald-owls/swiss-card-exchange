@@ -8,6 +8,7 @@ import { AllEntities } from '@/lib/schema';
 import { isInput } from '@/utils/parsers';
 import { SupabaseServerType, createSupabaseServer } from '@/utils/supabase-server';
 import { PostgrestError } from '@supabase/supabase-js';
+import { GetServerSidePropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { z } from 'zod';
 
@@ -25,6 +26,7 @@ type CreatePaginationProps<Entity extends AllEntities> = {
   fetchPromise?: (
     param: FetchProps<Entity>
   ) => Promise<{ data?: Entity[]; error?: FetchError }>;
+  nextContext: GetServerSidePropsContext;
 };
 
 export async function createPagination<Entity extends AllEntities>({
@@ -33,8 +35,9 @@ export async function createPagination<Entity extends AllEntities>({
   countPromise,
   fetchPromise,
   supabaseServerParam,
+  nextContext,
 }: CreatePaginationProps<Entity>) {
-  const supabaseServer = supabaseServerParam ?? createSupabaseServer();
+  const supabaseServer = supabaseServerParam ?? createSupabaseServer(nextContext);
   const countElements = countPromise ?? countWithSupabase;
   const { count, error: countError } = await countElements({ entity, supabaseServer });
 
