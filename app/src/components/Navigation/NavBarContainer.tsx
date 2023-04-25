@@ -18,7 +18,7 @@ export function NavBarContainer({ children }: NavBarContainerProps) {
         minHeight: navbarStyles.maxHeight,
         padding: navbarStyles.navbarPadding,
       }}
-      bg={useColorModeValue('gray.100', 'gray.900')}
+      bg={useColorModeValue('gray.900', 'gray.900')}
     >
       {children}
     </HStack>
