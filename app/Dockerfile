@@ -11,8 +11,15 @@ RUN npm ci
 
 FROM base AS builder
 WORKDIR /app
+
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY package*.json next.config.js tsconfig.json .eslintrc.json ./
+COPY .env.example .env.local
+COPY src src
+COPY public public
+
+RUN find . -type f -name '*.cy*' -print0 | xargs -0 rm \
+    && rm -rf src/testutils
 
 RUN npm run build
 
