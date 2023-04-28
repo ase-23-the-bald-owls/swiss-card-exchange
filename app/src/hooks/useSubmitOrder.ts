@@ -14,6 +14,7 @@ import {
   getAllItemsAsMap,
   totalShoppingCartPriceAtom,
 } from '@/store/shoppingCartStore';
+import { useUser } from '@supabase/auth-helpers-react';
 import { useAtom } from 'jotai/react';
 
 export function useSubmitOrder() {
@@ -23,6 +24,7 @@ export function useSubmitOrder() {
   const [totalShoppingCartPrice] = useAtom(totalShoppingCartPriceAtom);
   const [, setPaymentAmount] = useAtom(paymentAmountAtom);
   const supabaseClient = useBrowserSupabase();
+  const user = useUser();
 
   async function submitOrder() {
     const insertedShippingAddress = await insertAddress(
@@ -84,6 +86,7 @@ export function useSubmitOrder() {
       shipping_address_id: insertedShippingAddress.id,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       email: shippingAddress!.email,
+      user_id: user?.id ?? null,
     };
     const { data: maybeCustomer, error: insertCustomerError } = await supabaseClient
       .from('customer')

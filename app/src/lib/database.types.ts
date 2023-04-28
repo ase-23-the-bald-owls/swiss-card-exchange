@@ -38,18 +38,21 @@ export interface Database {
           email: string;
           id: number;
           shipping_address_id: number;
+          user_id: string | null;
         };
         Insert: {
           billing_address_id: number;
           email: string;
           id?: number;
           shipping_address_id: number;
+          user_id?: string | null;
         };
         Update: {
           billing_address_id?: number;
           email?: string;
           id?: number;
           shipping_address_id?: number;
+          user_id?: string | null;
         };
       };
       orderitem: {
