@@ -5,6 +5,7 @@ import {
   ShippingAddressRoute,
   SubmitOrderSuccessRoute,
 } from '../../src/utils/routes';
+import { user1 } from './users';
 
 const shippingAddress = {
   firstname: 'firstname',
@@ -144,6 +145,7 @@ describe('the checkout process', () => {
       cy.get('[data-cy=product-tile]').should('have.lengthOf.at.least', 1);
     });
 
+    // noinspection DuplicatedCode
     it('the user can use the same address for shipping and billing', () => {
       cy.get('[data-cy="shopping-cart-icon"]').click();
       cy.contains('Checkout').first().click();
@@ -175,6 +177,47 @@ describe('the checkout process', () => {
 
       cy.get('h2').contains('Order successfully submitted');
       cy.get('[data-cy="shopping-cart-badge"]').contains('0');
+    });
+
+    describe('and logged in', () => {
+      beforeEach(() => {
+        cy.logout();
+        cy.login(user1.username, user1.password);
+      });
+
+      // noinspection DuplicatedCode
+      it('the user can perform a checkout', () => {
+        cy.get('[data-cy="shopping-cart-icon"]').click();
+        cy.contains('Checkout').first().click();
+
+        cy.get('h2').contains('Shipping Address');
+        Object.entries(shippingAddress).forEach(([key, value]) => {
+          cy.get(`#${key}`).type(value);
+        });
+        cy.runnerScreenShot();
+        cy.get('button').contains('Submit').click();
+
+        cy.get('h2').contains('Billing Address');
+        cy.get('label:has(#addressesSame)').click();
+        cy.runnerScreenShot();
+        cy.get('button').contains('Continue').click();
+
+        cy.get('h2').contains('Submit Order');
+        Object.entries(shippingAddress)
+          .filter(([key]) => 'email' !== key)
+          .forEach(([, value]) => {
+            cy.get('.chakra-card__body')
+              .filter((key, element) => element.innerText.indexOf(value) !== -1)
+              .should('have.length', 2);
+          });
+        Object.entries(billingAddress).forEach(([, value]) => {
+          cy.contains(value).should('not.exist');
+        });
+        cy.get('button').contains('Submit Order').click();
+
+        cy.get('h2').contains('Order successfully submitted');
+        cy.get('[data-cy="shopping-cart-badge"]').contains('0');
+      });
     });
   });
 });
