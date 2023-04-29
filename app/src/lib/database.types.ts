@@ -8,6 +8,7 @@ export interface Database {
           address: string;
           city: string;
           company: string | null;
+          creator_expiry_time: string | null;
           firstname: string;
           id: number;
           name: string;
@@ -17,6 +18,7 @@ export interface Database {
           address: string;
           city: string;
           company?: string | null;
+          creator_expiry_time?: string | null;
           firstname: string;
           id?: number;
           name: string;
@@ -26,6 +28,7 @@ export interface Database {
           address?: string;
           city?: string;
           company?: string | null;
+          creator_expiry_time?: string | null;
           firstname?: string;
           id?: number;
           name?: string;
@@ -35,6 +38,7 @@ export interface Database {
       customer: {
         Row: {
           billing_address_id: number;
+          creator_expiry_time: string | null;
           email: string;
           id: number;
           shipping_address_id: number;
@@ -42,6 +46,7 @@ export interface Database {
         };
         Insert: {
           billing_address_id: number;
+          creator_expiry_time?: string | null;
           email: string;
           id?: number;
           shipping_address_id: number;
@@ -49,6 +54,7 @@ export interface Database {
         };
         Update: {
           billing_address_id?: number;
+          creator_expiry_time?: string | null;
           email?: string;
           id?: number;
           shipping_address_id?: number;
@@ -77,6 +83,7 @@ export interface Database {
       };
       orders: {
         Row: {
+          creator_expiry_time: string | null;
           customer_id: number | null;
           id: number;
           notification_sent: boolean | null;
@@ -84,6 +91,7 @@ export interface Database {
           payment_id: number | null;
         };
         Insert: {
+          creator_expiry_time?: string | null;
           customer_id?: number | null;
           id?: number;
           notification_sent?: boolean | null;
@@ -91,6 +99,7 @@ export interface Database {
           payment_id?: number | null;
         };
         Update: {
+          creator_expiry_time?: string | null;
           customer_id?: number | null;
           id?: number;
           notification_sent?: boolean | null;
