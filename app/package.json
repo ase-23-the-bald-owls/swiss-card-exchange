@@ -10,8 +10,8 @@
     "dev": "next dev",
     "eslint": "eslint '**/*.{js,jsx,ts,tsx}' && tsc",
     "eslint-check": "eslint --no-fix '**/*.{js,jsx,ts,tsx}' && tsc",
-    "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
-    "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss}'",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,html,md,json,scss,sql}'",
+    "format-check": "prettier --check '**/*.{js,jsx,ts,tsx,css,html,md,json,scss,sql}'",
     "lint": "npm run eslint && npm run format",
     "lint-check": "npm run eslint-check && npm run format-check",
     "next": "next",
@@ -36,7 +36,7 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sharp": "0.31.0",
+    "sharp": "0.32.0",
     "zod": "3.21.4"
   },
   "devDependencies": {
@@ -62,6 +62,7 @@
     "prettier": "2.8.4",
     "prettier-plugin-packagejson": "2.4.3",
     "prettier-plugin-sort-json": "1.0.0",
+    "prettier-plugin-sql": "0.14.0",
     "server-only": "0.0.1",
     "supabase": "1.42.5",
     "typescript": "4.9.5"

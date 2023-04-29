@@ -3,15 +3,19 @@ import { SupabaseProvider } from '@/hooks/useSupabaseBrowser';
 import { defaultStore } from '@/store/defaultStore';
 import '@/styles/globals.css';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { QueryClient } from '@tanstack/query-core';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'jotai';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useState } from 'react';
 
 export default function App({ Component, pageProps }: AppProps) {
   const theme = extendTheme({ initialColorMode: 'dark' });
   const queryClient = new QueryClient();
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
   return (
     <>
@@ -22,15 +26,20 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SupabaseProvider>
-        <QueryClientProvider client={queryClient}>
-          <ChakraProvider theme={theme}>
-            <Provider store={defaultStore}>
-              <ReinitializeShoppingCart>
-                <Component {...pageProps} />
-              </ReinitializeShoppingCart>
-            </Provider>
-          </ChakraProvider>
-        </QueryClientProvider>
+        <SessionContextProvider
+          supabaseClient={supabaseClient}
+          initialSession={pageProps.initialSession}
+        >
+          <QueryClientProvider client={queryClient}>
+            <ChakraProvider theme={theme}>
+              <Provider store={defaultStore}>
+                <ReinitializeShoppingCart>
+                  <Component {...pageProps} />
+                </ReinitializeShoppingCart>
+              </Provider>
+            </ChakraProvider>
+          </QueryClientProvider>
+        </SessionContextProvider>
       </SupabaseProvider>
     </>
   );
