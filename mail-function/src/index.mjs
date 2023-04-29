@@ -11,11 +11,25 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
 );
 
-const dbData = await loadDBData();
+process.on('SIGINT', () => {
+  console.log('You clicked Ctrl+C!');
+  process.exit(1);
+});
 
-await notificationMail(dbData);
+// noinspection InfiniteLoopJS
+while (true) {
+  try {
+    const dbData = await loadDBData();
+    console.log('sending emails because of the following orders: ', dbData);
 
-await updateSPB(dbData);
+    await notificationMail(dbData);
+
+    await updateSPB(dbData);
+    await delay(1000);
+  } catch (e) {
+    console.log('an error occurred: ', e);
+  }
+}
 
 async function loadDBData() {
   const { data, error } = await supabase
@@ -39,6 +53,7 @@ async function loadDBData() {
 async function notificationMail(orders) {
   const transporter = createTransport({
     port: 1025,
+    host: process.env.NEXT_PUBLIC_MAIL_HOST ?? 'localhost',
     secure: false,
   });
 
@@ -66,4 +81,8 @@ async function updateSPB(orders) {
 
     console.log(error);
   }
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

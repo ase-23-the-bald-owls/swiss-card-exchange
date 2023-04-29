@@ -43,7 +43,6 @@ services:
       - default
       - localstack-subnet
 
-  
   supabase-dc:
     build:
       context: .
@@ -77,9 +76,12 @@ services:
     profiles:
       - "local-run"
     environment:
-      - NEXT_PUBLIC_SUPABASE_URL=http://localhost
+      - NEXT_PUBLIC_SUPABASE_URL=http://supabase.local
       - NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY=${SERVICE_ROLE_KEY}
-    network_mode: host
+      - NEXT_PUBLIC_MAIL_HOST=mail
+    networks:
+      - default
+      - localstack-subnet
 
 volumes:
   localstack-persistence:

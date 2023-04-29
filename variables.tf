@@ -10,6 +10,12 @@ variable "sce_app_version" {
   default     = "local"
 }
 
+variable "mail_function_version" {
+  description = "version of the image to deploy"
+  type        = string
+  default     = "local"
+}
+
 variable "password_seed" {
   description = "The seed for the passwords. New passwords are generated if it changes"
   type        = string
