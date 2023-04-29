@@ -1,6 +1,6 @@
 FROM node:18-alpine AS base
 
-FROM base as deps
+FROM base AS deps
 
 RUN apk add --no-cache g++ python3 make
 
