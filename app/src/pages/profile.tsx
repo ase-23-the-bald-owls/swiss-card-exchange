@@ -3,6 +3,7 @@ import { Pagination } from '@/components/Pagination';
 import { OrderCard } from '@/components/Profile/OrderCard';
 import { useBrowserSupabase } from '@/hooks/useSupabaseBrowser';
 import { OrderWithCustomerAndItems } from '@/lib/orders';
+import { fetchOrdersWith } from '@/orders/fetchOrders';
 import styles from '@/styles/Home.module.css';
 import { ErrorProps } from '@/utils/ErrorProps';
 import { createError, createSuccess } from '@/utils/createServerSideProps';
@@ -123,20 +124,8 @@ export default function Profile({ user, orders, pagination, code }: ProfileProps
 
 async function fetchOrdersPaginated(param: FetchProps<'orders'>) {
   const { entity, pageNumber, pageSize, supabaseServer } = param;
-  const { data: supabaseResult, error } = await supabaseServer
-    .from('orders')
-    .select(
-      `*, 
-        orderitems:orderitem!left(
-            *, 
-            product:products!left(*)
-        ),
-        customer!left(
-            *,
-            billing_address:addresses!customer_billing_address_id_fkey(*),
-            shipping_address:addresses!customer_shipping_address_id_fkey(*)
-        )`
-    )
+  const { data: supabaseResult, error } = await fetchOrdersWith(supabaseServer)
+    .selectOrdersAndChildEntities()
     .range(pageNumber * pageSize, (pageNumber + 1) * pageSize - 1);
   if (error || !supabaseResult) {
     return { error: error ?? `fetch of ${entity} failed` };
