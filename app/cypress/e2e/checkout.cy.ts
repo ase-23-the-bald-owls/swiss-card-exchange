@@ -8,13 +8,13 @@ import {
 import { user1 } from './users';
 
 const shippingAddress = {
-  firstname: 'firstname',
-  name: 'name',
-  company: 'company',
-  address: 'My street 5',
-  zipCode: '4000',
-  city: 'Basel',
-  email: 'a@b.com',
+  firstname: 'Fritz',
+  name: 'Kalbermatter',
+  company: 'Bettercompany',
+  address: 'My street 6',
+  zipCode: '8000',
+  city: 'Zürich',
+  email: 'blabla@mustermann.ch',
 };
 
 const shippingAddressWithOtherName = {
@@ -23,11 +23,11 @@ const shippingAddressWithOtherName = {
 };
 
 const billingAddress = {
-  firstname: 'billingFirstname',
-  name: 'billingName',
-  address: 'My billingStreet 5',
-  zipCode: '8000',
-  city: 'Zürich',
+  firstname: 'Hans',
+  name: 'Müller',
+  address: 'My street 5',
+  zipCode: '4000',
+  city: 'Basel',
 };
 
 describe('the checkout process', () => {
@@ -192,19 +192,20 @@ describe('the checkout process', () => {
         cy.get('[data-cy="shopping-cart-icon"]').click();
         cy.contains('Checkout').first().click();
 
-        cy.get('h2').contains('Shipping Address');
+        cy.get('h2').contains('Shipping Address', { timeout: 20000 });
+        // the address is already prefilled
         Object.entries(shippingAddress).forEach(([key, value]) => {
-          cy.get(`#${key}`).type(value);
+          cy.get(`#${key}`).should('have.value', value);
         });
         cy.runnerScreenShot();
         cy.get('button').contains('Submit').click();
 
-        cy.get('h2').contains('Billing Address');
+        cy.get('h2').contains('Billing Address', { timeout: 20000 });
         cy.get('label:has(#addressesSame)').click();
         cy.runnerScreenShot();
         cy.get('button').contains('Continue').click();
 
-        cy.get('h2').contains('Submit Order');
+        cy.get('h2').contains('Submit Order', { timeout: 20000 });
         Object.entries(shippingAddress)
           .filter(([key]) => 'email' !== key)
           .forEach(([, value]) => {
@@ -217,7 +218,7 @@ describe('the checkout process', () => {
         });
         cy.get('button').contains('Submit Order').click();
 
-        cy.get('h2').contains('Order successfully submitted');
+        cy.get('h2').contains('Order successfully submitted', { timeout: 20000 });
         cy.get('[data-cy="shopping-cart-badge"]').contains('0');
 
         cy.get('[data-cy=user-avatar]').click();

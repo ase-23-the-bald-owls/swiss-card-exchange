@@ -14,6 +14,7 @@ import {
   getAllItemsAsMap,
   totalShoppingCartPriceAtom,
 } from '@/store/shoppingCartStore';
+import { removeProperties } from '@/utils/removeProperties';
 import { useUser } from '@supabase/auth-helpers-react';
 import { useAtom } from 'jotai/react';
 
@@ -62,13 +63,10 @@ export function useSubmitOrder() {
   };
 
   async function insertAddress(address: Address) {
-    const addressToInsert: AddressWithoutId = {
+    const addressToInsert: AddressWithoutId = removeProperties(['zipCode']).from({
       ...address,
       zip_code: address.zipCode,
-    };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    delete addressToInsert.zipCode;
+    });
     const { data: maybeAddress, error: insertAddressError } = await supabaseClient
       .from('addresses')
       .insert(addressToInsert)
@@ -131,11 +129,5 @@ export function useSubmitOrder() {
 }
 
 function removeEmailProperty(shippingAddress: Address) {
-  const addressWithoutEmail = {
-    ...shippingAddress,
-  } as Address;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  delete addressWithoutEmail.email;
-  return addressWithoutEmail;
+  return removeProperties(['email']).from(shippingAddress);
 }
