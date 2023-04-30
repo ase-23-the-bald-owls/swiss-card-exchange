@@ -54,8 +54,8 @@ jobs:
         env:
           CYPRESS_BASE_URL: http://localhost:8080
 
-      - run: docker compose logs mail-function | grep "Message sent:"
-      
+      - run: docker compose logs mail-function | grep "Message sssent:"; 
+
       - run: |
           mkdir /tmp/next-build
           for container in $(docker ps -a -q | xargs -L 1 echo); do
