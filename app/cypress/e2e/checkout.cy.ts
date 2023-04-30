@@ -201,6 +201,11 @@ describe('the checkout process', () => {
         cy.get('button').contains('Submit').click();
 
         cy.get('h2').contains('Billing Address', { timeout: 20000 });
+        // the address is already prefilled
+        Object.entries(billingAddress).forEach(([key, value]) => {
+          cy.get(`#${key}`).should('have.value', value);
+        });
+        cy.runnerScreenShot();
         cy.get('label:has(#addressesSame)').click();
         cy.runnerScreenShot();
         cy.get('button').contains('Continue').click();
