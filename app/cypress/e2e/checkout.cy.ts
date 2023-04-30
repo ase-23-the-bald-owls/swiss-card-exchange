@@ -119,6 +119,8 @@ describe('the checkout process', () => {
       Object.entries(shippingAddress).forEach(([key, value]) => {
         cy.get(`#${key}`).clear().type(value);
       });
+      cy.get('button').contains('Submit').click();
+
       cy.get('a').contains('Submit Order').click();
 
       cy.get('h2').contains('Submit Order');
