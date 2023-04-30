@@ -4797,10 +4797,27 @@ WITH
   4;
 
 INSERT INTO
-  public.customer (email, billing_address_id, shipping_address_id)
+  public.customer (
+    email,
+    billing_address_id,
+    shipping_address_id,
+    user_id
+  )
 VALUES
-  ('blabla@mustermann.ch', 1, 2),
-  ('yugioh@suchti.de', 3, 3);
+  (
+    'blabla@mustermann.ch',
+    1,
+    2,
+    (
+      SELECT
+        u.id
+      FROM
+        auth.users u
+      WHERE
+        u.email = 'user1@example.com'
+    )
+  ),
+  ('yugioh@suchti.de', 3, 3, NULL);
 
 INSERT INTO
   public.orders (
