@@ -231,6 +231,9 @@ jobs:
       - run: cypress/wait-for-frontend-to-start.sh
         working-directory: app
 
+      - run: docker compose up -d mail-function mail
+        if: always()
+
       - run: npm run cypress-run
         if: always()
         working-directory: app
