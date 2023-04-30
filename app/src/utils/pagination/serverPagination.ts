@@ -14,7 +14,7 @@ import { z } from 'zod';
 
 type QueryParamsType = ParsedUrlQuery | PaginationQueryProps;
 type FetchError = PostgrestError | string | number;
-type CreatePaginationProps<Entity extends AllEntities> = {
+type CreatePaginationProps<Entity extends AllEntities, RETURN_VALUE> = {
   entity: Entity;
   query: QueryParamsType;
 
@@ -25,18 +25,18 @@ type CreatePaginationProps<Entity extends AllEntities> = {
 
   fetchPromise?: (
     param: FetchProps<Entity>
-  ) => Promise<{ data?: Entity[]; error?: FetchError }>;
+  ) => Promise<{ data?: RETURN_VALUE[]; error?: FetchError }>;
   nextContext: GetServerSidePropsContext;
 };
 
-export async function createPagination<Entity extends AllEntities>({
+export async function createPagination<Entity extends AllEntities, RETURN_VALUE>({
   entity,
   query,
   countPromise,
   fetchPromise,
   supabaseServerParam,
   nextContext,
-}: CreatePaginationProps<Entity>) {
+}: CreatePaginationProps<Entity, RETURN_VALUE>) {
   const supabaseServer = supabaseServerParam ?? createSupabaseServer(nextContext);
   const countElements = countPromise ?? countWithSupabase;
   const { count, error: countError } = await countElements({ entity, supabaseServer });
@@ -82,9 +82,10 @@ async function countWithSupabase<Entity extends AllEntities>({
   return supabaseServer.from(entity).select('*', { count: 'exact', head: true });
 }
 
-type FetchProps<Entity extends AllEntities> = CountProps<Entity> & PaginationQueryProps;
+export type FetchProps<Entity extends AllEntities> = CountProps<Entity> &
+  PaginationQueryProps;
 
-async function fetchWithSupabase<Entity extends AllEntities>({
+async function fetchWithSupabase<Entity extends AllEntities, RETURN_VALUE>({
   entity,
   supabaseServer,
   pageNumber,
@@ -95,6 +96,6 @@ async function fetchWithSupabase<Entity extends AllEntities>({
     .select('*')
     .range(pageNumber * pageSize, (pageNumber + 1) * pageSize - 1);
   // supabase does not type the result nicely, so we cast it
-  const castedData = supabaseResult as unknown as Entity[];
+  const castedData = supabaseResult as unknown as RETURN_VALUE[];
   return { data: castedData, error };
 }
