@@ -52,8 +52,6 @@ describe('createPagination', () => {
       query: {},
       supabaseServerParam: createFakeSupabaseClient(),
       countPromise: countSuccess(count),
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       fetchPromise: fetchSuccess(10),
       nextContext: createFakeNextRequestContext(),
     });
@@ -138,8 +136,6 @@ describe('createPagination', () => {
         query: paramPagination,
         supabaseServerParam: createFakeSupabaseClient(),
         countPromise: countSuccess(count),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         fetchPromise: fetchSuccess(param.expectedPagination.pageSize),
         nextContext: createFakeNextRequestContext(),
       });

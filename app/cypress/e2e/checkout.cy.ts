@@ -186,7 +186,7 @@ describe('the checkout process', () => {
       });
 
       // noinspection DuplicatedCode
-      it('the user can perform a checkout', () => {
+      it('the user can perform a checkout and sees his order list', () => {
         cy.get('[data-cy="shopping-cart-icon"]').click();
         cy.contains('Checkout').first().click();
 
@@ -217,6 +217,13 @@ describe('the checkout process', () => {
 
         cy.get('h2').contains('Order successfully submitted');
         cy.get('[data-cy="shopping-cart-badge"]').contains('0');
+
+        cy.get('[data-cy=user-avatar]').click();
+
+        cy.contains('Orders').click();
+
+        cy.contains('Order N').should('have.length.at.least', 1);
+        cy.runnerScreenShot();
       });
     });
   });
