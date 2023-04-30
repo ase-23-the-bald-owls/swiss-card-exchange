@@ -66,7 +66,10 @@ async function notificationMail(orders) {
       html: `<b>Dear Customer, thanks for order with the following info: order nr. ${orderId}</b>`,
     });
     const time = new Date();
-    console.log('Message sent: %s', info.messageId,  ' with time: ', time.toLocaleString());
+    console.log('Message sent: %s',
+     info.messageId,
+     ' with time: ',
+     time.toLocaleString());
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
     console.log(info.response);
