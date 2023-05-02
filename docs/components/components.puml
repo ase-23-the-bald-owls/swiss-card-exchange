@@ -1,0 +1,41 @@
+@startuml
+allow_mixing
+left to right direction
+
+package "app" {
+    object server
+    server : <img:nextjs.png>
+    object client
+    client : <img:react.png>
+
+    client -> server
+}
+
+object "mail-function" as mailfunction
+mailfunction : <img:nodejs.png>
+
+package "supabase" {
+    together {
+        component auth
+        component postgrest
+        component postgresql
+        component "and more components..."
+    }
+
+    object " " as supabaseimg
+    supabaseimg : <img:supabase.jpeg>
+
+    auth --> postgresql
+    postgrest --> postgresql
+    "and more components..." -> postgresql
+}
+"supabase" -[hidden] supabaseimg
+
+
+
+client ---> auth
+client -> postgrest
+server -> postgrest
+mailfunction -> postgrest
+
+@enduml
