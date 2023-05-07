@@ -1,0 +1,960 @@
+---
+swagger: "2.0"
+info:
+  description: "standard public schema"
+  title: "PostgREST API"
+  version: "10.1.2"
+host: "0.0.0.0:3000"
+basePath: "/"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+  - "application/vnd.pgrst.object+json"
+  - "text/csv"
+produces:
+  - "application/json"
+  - "application/vnd.pgrst.object+json"
+  - "text/csv"
+paths:
+  /:
+    get:
+      tags:
+        - "Introspection"
+      summary: "OpenAPI description (this document)"
+      produces:
+        - "application/openapi+json"
+        - "application/json"
+      responses:
+        "200":
+          description: "OK"
+  /products:
+    get:
+      tags:
+        - "products"
+      parameters:
+        - $ref: "#/parameters/rowFilter.products.id"
+        - $ref: "#/parameters/rowFilter.products.title"
+        - $ref: "#/parameters/rowFilter.products.description"
+        - $ref: "#/parameters/rowFilter.products.rarity"
+        - $ref: "#/parameters/rowFilter.products.set"
+        - $ref: "#/parameters/rowFilter.products.card_type"
+        - $ref: "#/parameters/rowFilter.products.attributes"
+        - $ref: "#/parameters/rowFilter.products.types"
+        - $ref: "#/parameters/rowFilter.products.price"
+        - $ref: "#/parameters/rowFilter.products.created_at"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/order"
+        - $ref: "#/parameters/range"
+        - $ref: "#/parameters/rangeUnit"
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+        - $ref: "#/parameters/preferCount"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            items:
+              $ref: "#/definitions/products"
+            type: "array"
+        "206":
+          description: "Partial Content"
+    post:
+      tags:
+        - "products"
+      parameters:
+        - $ref: "#/parameters/body.products"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/preferPost"
+      responses:
+        "201":
+          description: "Created"
+    delete:
+      tags:
+        - "products"
+      parameters:
+        - $ref: "#/parameters/rowFilter.products.id"
+        - $ref: "#/parameters/rowFilter.products.title"
+        - $ref: "#/parameters/rowFilter.products.description"
+        - $ref: "#/parameters/rowFilter.products.rarity"
+        - $ref: "#/parameters/rowFilter.products.set"
+        - $ref: "#/parameters/rowFilter.products.card_type"
+        - $ref: "#/parameters/rowFilter.products.attributes"
+        - $ref: "#/parameters/rowFilter.products.types"
+        - $ref: "#/parameters/rowFilter.products.price"
+        - $ref: "#/parameters/rowFilter.products.created_at"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+    patch:
+      tags:
+        - "products"
+      parameters:
+        - $ref: "#/parameters/rowFilter.products.id"
+        - $ref: "#/parameters/rowFilter.products.title"
+        - $ref: "#/parameters/rowFilter.products.description"
+        - $ref: "#/parameters/rowFilter.products.rarity"
+        - $ref: "#/parameters/rowFilter.products.set"
+        - $ref: "#/parameters/rowFilter.products.card_type"
+        - $ref: "#/parameters/rowFilter.products.attributes"
+        - $ref: "#/parameters/rowFilter.products.types"
+        - $ref: "#/parameters/rowFilter.products.price"
+        - $ref: "#/parameters/rowFilter.products.created_at"
+        - $ref: "#/parameters/body.products"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+  /orders:
+    get:
+      tags:
+        - "orders"
+      parameters:
+        - $ref: "#/parameters/rowFilter.orders.id"
+        - $ref: "#/parameters/rowFilter.orders.order_state"
+        - $ref: "#/parameters/rowFilter.orders.payment_id"
+        - $ref: "#/parameters/rowFilter.orders.customer_id"
+        - $ref: "#/parameters/rowFilter.orders.notification_sent"
+        - $ref: "#/parameters/rowFilter.orders.creator_expiry_time"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/order"
+        - $ref: "#/parameters/range"
+        - $ref: "#/parameters/rangeUnit"
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+        - $ref: "#/parameters/preferCount"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            items:
+              $ref: "#/definitions/orders"
+            type: "array"
+        "206":
+          description: "Partial Content"
+    post:
+      tags:
+        - "orders"
+      parameters:
+        - $ref: "#/parameters/body.orders"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/preferPost"
+      responses:
+        "201":
+          description: "Created"
+    delete:
+      tags:
+        - "orders"
+      parameters:
+        - $ref: "#/parameters/rowFilter.orders.id"
+        - $ref: "#/parameters/rowFilter.orders.order_state"
+        - $ref: "#/parameters/rowFilter.orders.payment_id"
+        - $ref: "#/parameters/rowFilter.orders.customer_id"
+        - $ref: "#/parameters/rowFilter.orders.notification_sent"
+        - $ref: "#/parameters/rowFilter.orders.creator_expiry_time"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+    patch:
+      tags:
+        - "orders"
+      parameters:
+        - $ref: "#/parameters/rowFilter.orders.id"
+        - $ref: "#/parameters/rowFilter.orders.order_state"
+        - $ref: "#/parameters/rowFilter.orders.payment_id"
+        - $ref: "#/parameters/rowFilter.orders.customer_id"
+        - $ref: "#/parameters/rowFilter.orders.notification_sent"
+        - $ref: "#/parameters/rowFilter.orders.creator_expiry_time"
+        - $ref: "#/parameters/body.orders"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+  /customer:
+    get:
+      tags:
+        - "customer"
+      parameters:
+        - $ref: "#/parameters/rowFilter.customer.id"
+        - $ref: "#/parameters/rowFilter.customer.email"
+        - $ref: "#/parameters/rowFilter.customer.user_id"
+        - $ref: "#/parameters/rowFilter.customer.shipping_address_id"
+        - $ref: "#/parameters/rowFilter.customer.billing_address_id"
+        - $ref: "#/parameters/rowFilter.customer.creator_expiry_time"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/order"
+        - $ref: "#/parameters/range"
+        - $ref: "#/parameters/rangeUnit"
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+        - $ref: "#/parameters/preferCount"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            items:
+              $ref: "#/definitions/customer"
+            type: "array"
+        "206":
+          description: "Partial Content"
+    post:
+      tags:
+        - "customer"
+      parameters:
+        - $ref: "#/parameters/body.customer"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/preferPost"
+      responses:
+        "201":
+          description: "Created"
+    delete:
+      tags:
+        - "customer"
+      parameters:
+        - $ref: "#/parameters/rowFilter.customer.id"
+        - $ref: "#/parameters/rowFilter.customer.email"
+        - $ref: "#/parameters/rowFilter.customer.user_id"
+        - $ref: "#/parameters/rowFilter.customer.shipping_address_id"
+        - $ref: "#/parameters/rowFilter.customer.billing_address_id"
+        - $ref: "#/parameters/rowFilter.customer.creator_expiry_time"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+    patch:
+      tags:
+        - "customer"
+      parameters:
+        - $ref: "#/parameters/rowFilter.customer.id"
+        - $ref: "#/parameters/rowFilter.customer.email"
+        - $ref: "#/parameters/rowFilter.customer.user_id"
+        - $ref: "#/parameters/rowFilter.customer.shipping_address_id"
+        - $ref: "#/parameters/rowFilter.customer.billing_address_id"
+        - $ref: "#/parameters/rowFilter.customer.creator_expiry_time"
+        - $ref: "#/parameters/body.customer"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+  /payment:
+    get:
+      tags:
+        - "payment"
+      parameters:
+        - $ref: "#/parameters/rowFilter.payment.id"
+        - $ref: "#/parameters/rowFilter.payment.payment_amount"
+        - $ref: "#/parameters/rowFilter.payment.payment_type"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/order"
+        - $ref: "#/parameters/range"
+        - $ref: "#/parameters/rangeUnit"
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+        - $ref: "#/parameters/preferCount"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            items:
+              $ref: "#/definitions/payment"
+            type: "array"
+        "206":
+          description: "Partial Content"
+    post:
+      tags:
+        - "payment"
+      parameters:
+        - $ref: "#/parameters/body.payment"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/preferPost"
+      responses:
+        "201":
+          description: "Created"
+    delete:
+      tags:
+        - "payment"
+      parameters:
+        - $ref: "#/parameters/rowFilter.payment.id"
+        - $ref: "#/parameters/rowFilter.payment.payment_amount"
+        - $ref: "#/parameters/rowFilter.payment.payment_type"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+    patch:
+      tags:
+        - "payment"
+      parameters:
+        - $ref: "#/parameters/rowFilter.payment.id"
+        - $ref: "#/parameters/rowFilter.payment.payment_amount"
+        - $ref: "#/parameters/rowFilter.payment.payment_type"
+        - $ref: "#/parameters/body.payment"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+  /addresses:
+    get:
+      tags:
+        - "addresses"
+      parameters:
+        - $ref: "#/parameters/rowFilter.addresses.id"
+        - $ref: "#/parameters/rowFilter.addresses.firstname"
+        - $ref: "#/parameters/rowFilter.addresses.name"
+        - $ref: "#/parameters/rowFilter.addresses.company"
+        - $ref: "#/parameters/rowFilter.addresses.address"
+        - $ref: "#/parameters/rowFilter.addresses.zip_code"
+        - $ref: "#/parameters/rowFilter.addresses.city"
+        - $ref: "#/parameters/rowFilter.addresses.creator_expiry_time"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/order"
+        - $ref: "#/parameters/range"
+        - $ref: "#/parameters/rangeUnit"
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+        - $ref: "#/parameters/preferCount"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            items:
+              $ref: "#/definitions/addresses"
+            type: "array"
+        "206":
+          description: "Partial Content"
+    post:
+      tags:
+        - "addresses"
+      parameters:
+        - $ref: "#/parameters/body.addresses"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/preferPost"
+      responses:
+        "201":
+          description: "Created"
+    delete:
+      tags:
+        - "addresses"
+      parameters:
+        - $ref: "#/parameters/rowFilter.addresses.id"
+        - $ref: "#/parameters/rowFilter.addresses.firstname"
+        - $ref: "#/parameters/rowFilter.addresses.name"
+        - $ref: "#/parameters/rowFilter.addresses.company"
+        - $ref: "#/parameters/rowFilter.addresses.address"
+        - $ref: "#/parameters/rowFilter.addresses.zip_code"
+        - $ref: "#/parameters/rowFilter.addresses.city"
+        - $ref: "#/parameters/rowFilter.addresses.creator_expiry_time"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+    patch:
+      tags:
+        - "addresses"
+      parameters:
+        - $ref: "#/parameters/rowFilter.addresses.id"
+        - $ref: "#/parameters/rowFilter.addresses.firstname"
+        - $ref: "#/parameters/rowFilter.addresses.name"
+        - $ref: "#/parameters/rowFilter.addresses.company"
+        - $ref: "#/parameters/rowFilter.addresses.address"
+        - $ref: "#/parameters/rowFilter.addresses.zip_code"
+        - $ref: "#/parameters/rowFilter.addresses.city"
+        - $ref: "#/parameters/rowFilter.addresses.creator_expiry_time"
+        - $ref: "#/parameters/body.addresses"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+  /orderitem:
+    get:
+      tags:
+        - "orderitem"
+      parameters:
+        - $ref: "#/parameters/rowFilter.orderitem.id"
+        - $ref: "#/parameters/rowFilter.orderitem.order_id"
+        - $ref: "#/parameters/rowFilter.orderitem.product_id"
+        - $ref: "#/parameters/rowFilter.orderitem.quantity"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/order"
+        - $ref: "#/parameters/range"
+        - $ref: "#/parameters/rangeUnit"
+        - $ref: "#/parameters/offset"
+        - $ref: "#/parameters/limit"
+        - $ref: "#/parameters/preferCount"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            items:
+              $ref: "#/definitions/orderitem"
+            type: "array"
+        "206":
+          description: "Partial Content"
+    post:
+      tags:
+        - "orderitem"
+      parameters:
+        - $ref: "#/parameters/body.orderitem"
+        - $ref: "#/parameters/select"
+        - $ref: "#/parameters/preferPost"
+      responses:
+        "201":
+          description: "Created"
+    delete:
+      tags:
+        - "orderitem"
+      parameters:
+        - $ref: "#/parameters/rowFilter.orderitem.id"
+        - $ref: "#/parameters/rowFilter.orderitem.order_id"
+        - $ref: "#/parameters/rowFilter.orderitem.product_id"
+        - $ref: "#/parameters/rowFilter.orderitem.quantity"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+    patch:
+      tags:
+        - "orderitem"
+      parameters:
+        - $ref: "#/parameters/rowFilter.orderitem.id"
+        - $ref: "#/parameters/rowFilter.orderitem.order_id"
+        - $ref: "#/parameters/rowFilter.orderitem.product_id"
+        - $ref: "#/parameters/rowFilter.orderitem.quantity"
+        - $ref: "#/parameters/body.orderitem"
+        - $ref: "#/parameters/preferReturn"
+      responses:
+        "204":
+          description: "No Content"
+definitions:
+  products:
+    required:
+      - "id"
+      - "created_at"
+    properties:
+      id:
+        description: "Note:\nThis is a Primary Key.<pk/>"
+        format: "bigint"
+        type: "integer"
+      title:
+        format: "text"
+        type: "string"
+      description:
+        format: "text"
+        type: "string"
+      rarity:
+        format: "character varying"
+        maxLength: 30
+        type: "string"
+      set:
+        format: "text"
+        type: "string"
+      card_type:
+        format: "character varying"
+        maxLength: 30
+        type: "string"
+      attributes:
+        format: "character varying"
+        maxLength: 100
+        type: "string"
+      types:
+        format: "character varying"
+        maxLength: 100
+        type: "string"
+      price:
+        format: "double precision"
+        type: "number"
+      created_at:
+        default: "timezone('utc'::text, now())"
+        format: "timestamp with time zone"
+        type: "string"
+    type: "object"
+  orders:
+    required:
+      - "id"
+    properties:
+      id:
+        description: "Note:\nThis is a Primary Key.<pk/>"
+        format: "bigint"
+        type: "integer"
+      order_state:
+        format: "character varying"
+        maxLength: 30
+        type: "string"
+      payment_id:
+        description: "Note:\nThis is a Foreign Key to `payment.id`.<fk table='payment'\
+          \ column='id'/>"
+        format: "bigint"
+        type: "integer"
+      customer_id:
+        description: "Note:\nThis is a Foreign Key to `customer.id`.<fk table='customer'\
+          \ column='id'/>"
+        format: "bigint"
+        type: "integer"
+      notification_sent:
+        default: false
+        format: "boolean"
+        type: "boolean"
+      creator_expiry_time:
+        default: "(auth.jwt() ->> 'exp'::text)"
+        format: "text"
+        type: "string"
+    type: "object"
+  customer:
+    required:
+      - "id"
+      - "email"
+      - "shipping_address_id"
+      - "billing_address_id"
+    properties:
+      id:
+        description: "Note:\nThis is a Primary Key.<pk/>"
+        format: "bigint"
+        type: "integer"
+      email:
+        format: "text"
+        type: "string"
+      user_id:
+        format: "uuid"
+        type: "string"
+      shipping_address_id:
+        description: "Note:\nThis is a Foreign Key to `addresses.id`.<fk table='addresses'\
+          \ column='id'/>"
+        format: "bigint"
+        type: "integer"
+      billing_address_id:
+        description: "Note:\nThis is a Foreign Key to `addresses.id`.<fk table='addresses'\
+          \ column='id'/>"
+        format: "bigint"
+        type: "integer"
+      creator_expiry_time:
+        default: "(auth.jwt() ->> 'exp'::text)"
+        format: "text"
+        type: "string"
+    type: "object"
+  payment:
+    required:
+      - "id"
+      - "payment_amount"
+    properties:
+      id:
+        description: "Note:\nThis is a Primary Key.<pk/>"
+        format: "bigint"
+        type: "integer"
+      payment_amount:
+        format: "double precision"
+        type: "number"
+      payment_type:
+        format: "character varying"
+        maxLength: 30
+        type: "string"
+    type: "object"
+  addresses:
+    required:
+      - "id"
+      - "firstname"
+      - "name"
+      - "address"
+      - "zip_code"
+      - "city"
+    properties:
+      id:
+        description: "Note:\nThis is a Primary Key.<pk/>"
+        format: "bigint"
+        type: "integer"
+      firstname:
+        format: "text"
+        type: "string"
+      name:
+        format: "text"
+        type: "string"
+      company:
+        format: "text"
+        type: "string"
+      address:
+        format: "text"
+        type: "string"
+      zip_code:
+        format: "text"
+        type: "string"
+      city:
+        format: "text"
+        type: "string"
+      creator_expiry_time:
+        default: "(auth.jwt() ->> 'exp'::text)"
+        format: "text"
+        type: "string"
+    type: "object"
+  orderitem:
+    required:
+      - "id"
+    properties:
+      id:
+        description: "Note:\nThis is a Primary Key.<pk/>"
+        format: "bigint"
+        type: "integer"
+      order_id:
+        description: "Note:\nThis is a Foreign Key to `orders.id`.<fk table='orders'\
+          \ column='id'/>"
+        format: "bigint"
+        type: "integer"
+      product_id:
+        description: "Note:\nThis is a Foreign Key to `products.id`.<fk table='products'\
+          \ column='id'/>"
+        format: "bigint"
+        type: "integer"
+      quantity:
+        default: 1
+        format: "integer"
+        type: "integer"
+    type: "object"
+parameters:
+  preferParams:
+    name: "Prefer"
+    description: "Preference"
+    required: false
+    enum:
+      - "params=single-object"
+    in: "header"
+    type: "string"
+  preferReturn:
+    name: "Prefer"
+    description: "Preference"
+    required: false
+    enum:
+      - "return=representation"
+      - "return=minimal"
+      - "return=none"
+    in: "header"
+    type: "string"
+  preferCount:
+    name: "Prefer"
+    description: "Preference"
+    required: false
+    enum:
+      - "count=none"
+    in: "header"
+    type: "string"
+  preferPost:
+    name: "Prefer"
+    description: "Preference"
+    required: false
+    enum:
+      - "return=representation"
+      - "return=minimal"
+      - "return=none"
+      - "resolution=ignore-duplicates"
+      - "resolution=merge-duplicates"
+    in: "header"
+    type: "string"
+  select:
+    name: "select"
+    description: "Filtering Columns"
+    required: false
+    in: "query"
+    type: "string"
+  on_conflict:
+    name: "on_conflict"
+    description: "On Conflict"
+    required: false
+    in: "query"
+    type: "string"
+  order:
+    name: "order"
+    description: "Ordering"
+    required: false
+    in: "query"
+    type: "string"
+  range:
+    name: "Range"
+    description: "Limiting and Pagination"
+    required: false
+    in: "header"
+    type: "string"
+  rangeUnit:
+    name: "Range-Unit"
+    description: "Limiting and Pagination"
+    required: false
+    default: "items"
+    in: "header"
+    type: "string"
+  offset:
+    name: "offset"
+    description: "Limiting and Pagination"
+    required: false
+    in: "query"
+    type: "string"
+  limit:
+    name: "limit"
+    description: "Limiting and Pagination"
+    required: false
+    in: "query"
+    type: "string"
+  body.products:
+    name: "products"
+    description: "products"
+    required: false
+    in: "body"
+    schema:
+      $ref: "#/definitions/products"
+  rowFilter.products.id:
+    name: "id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.products.title:
+    name: "title"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.products.description:
+    name: "description"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.products.rarity:
+    name: "rarity"
+    required: false
+    format: "character varying"
+    in: "query"
+    type: "string"
+  rowFilter.products.set:
+    name: "set"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.products.card_type:
+    name: "card_type"
+    required: false
+    format: "character varying"
+    in: "query"
+    type: "string"
+  rowFilter.products.attributes:
+    name: "attributes"
+    required: false
+    format: "character varying"
+    in: "query"
+    type: "string"
+  rowFilter.products.types:
+    name: "types"
+    required: false
+    format: "character varying"
+    in: "query"
+    type: "string"
+  rowFilter.products.price:
+    name: "price"
+    required: false
+    format: "double precision"
+    in: "query"
+    type: "string"
+  rowFilter.products.created_at:
+    name: "created_at"
+    required: false
+    format: "timestamp with time zone"
+    in: "query"
+    type: "string"
+  body.orders:
+    name: "orders"
+    description: "orders"
+    required: false
+    in: "body"
+    schema:
+      $ref: "#/definitions/orders"
+  rowFilter.orders.id:
+    name: "id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.orders.order_state:
+    name: "order_state"
+    required: false
+    format: "character varying"
+    in: "query"
+    type: "string"
+  rowFilter.orders.payment_id:
+    name: "payment_id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.orders.customer_id:
+    name: "customer_id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.orders.notification_sent:
+    name: "notification_sent"
+    required: false
+    format: "boolean"
+    in: "query"
+    type: "string"
+  rowFilter.orders.creator_expiry_time:
+    name: "creator_expiry_time"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  body.customer:
+    name: "customer"
+    description: "customer"
+    required: false
+    in: "body"
+    schema:
+      $ref: "#/definitions/customer"
+  rowFilter.customer.id:
+    name: "id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.customer.email:
+    name: "email"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.customer.user_id:
+    name: "user_id"
+    required: false
+    format: "uuid"
+    in: "query"
+    type: "string"
+  rowFilter.customer.shipping_address_id:
+    name: "shipping_address_id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.customer.billing_address_id:
+    name: "billing_address_id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.customer.creator_expiry_time:
+    name: "creator_expiry_time"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  body.payment:
+    name: "payment"
+    description: "payment"
+    required: false
+    in: "body"
+    schema:
+      $ref: "#/definitions/payment"
+  rowFilter.payment.id:
+    name: "id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.payment.payment_amount:
+    name: "payment_amount"
+    required: false
+    format: "double precision"
+    in: "query"
+    type: "string"
+  rowFilter.payment.payment_type:
+    name: "payment_type"
+    required: false
+    format: "character varying"
+    in: "query"
+    type: "string"
+  body.addresses:
+    name: "addresses"
+    description: "addresses"
+    required: false
+    in: "body"
+    schema:
+      $ref: "#/definitions/addresses"
+  rowFilter.addresses.id:
+    name: "id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.addresses.firstname:
+    name: "firstname"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.addresses.name:
+    name: "name"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.addresses.company:
+    name: "company"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.addresses.address:
+    name: "address"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.addresses.zip_code:
+    name: "zip_code"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.addresses.city:
+    name: "city"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  rowFilter.addresses.creator_expiry_time:
+    name: "creator_expiry_time"
+    required: false
+    format: "text"
+    in: "query"
+    type: "string"
+  body.orderitem:
+    name: "orderitem"
+    description: "orderitem"
+    required: false
+    in: "body"
+    schema:
+      $ref: "#/definitions/orderitem"
+  rowFilter.orderitem.id:
+    name: "id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.orderitem.order_id:
+    name: "order_id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.orderitem.product_id:
+    name: "product_id"
+    required: false
+    format: "bigint"
+    in: "query"
+    type: "string"
+  rowFilter.orderitem.quantity:
+    name: "quantity"
+    required: false
+    format: "integer"
+    in: "query"
+    type: "string"
+externalDocs:
+  description: "PostgREST Documentation"
+  url: "https://postgrest.org/en/v10.1/api.html"
