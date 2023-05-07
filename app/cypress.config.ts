@@ -7,7 +7,7 @@ export default defineConfig({
       url: '/api/__coverage__',
     },
   },
-
+  videoCompression: false,
   e2e: {
     baseUrl: 'http://localhost:3000/',
     supportFile: 'cypress/support/e2e.ts',
