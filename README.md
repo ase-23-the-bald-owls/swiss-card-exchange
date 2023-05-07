@@ -27,7 +27,7 @@ The application consist of 3 deployment units.
    which improves [SEO](https://en.wikipedia.org/wiki/Search_engine_optimization "Search engine optimization") because
    web crawlers of search engines can parse the content without executing javascript.
 
-2. [supabase](supabase): A container deployed with its terraform module to localstack.  
+2. [supabase](supabase): A container deployed with its terraform module to LocalStack.  
    It is [supabase](https://supabase.com/) self hosted with a [docker-compose.yml](supabase/app/docker-compose.yml)
    file.
    The container defined with the [Dockerfile](supabase/Dockerfile) coordinates the start of
@@ -50,10 +50,10 @@ The application consist of 3 deployment units.
 
 ![architecture](docs/components/components.png "Architecture")
 
-These deployment units are then deployed to [localstack](https://localstack.cloud/). How these
+These deployment units are then deployed to [LocalStack](https://localstack.cloud/). How these
 units are deployed is described with [TerraFrom](https://www.terraform.io/).
 
-Because it would be difficult to send emails to real mailboxes and the deployment target is localstack,
+Because it would be difficult to send emails to real mailboxes and the deployment target is LocalStack,
 the mail-function sends the emails to [MailHog](https://github.com/mailhog/MailHog). The deployment of
 MailHog is defined in the top level [docker-compose.yml](docker-compose.yml) under the service mail.
 
@@ -64,7 +64,7 @@ See [app](app)
 
 ## Local deployment
 
-To quickly build and test the docker images, a [docker-compose](docker-compose.yml) file is in the
+To quickly build and test the docker images, a [docker-compose.yml](docker-compose.yml) file is in the
 root directory.
 Start the deployment with:
 
@@ -79,11 +79,11 @@ To stop them, run:
 docker compose -f supabase/app/docker-compose.yml down
 ```
 
-## Deployment on localstack
+## Deployment on LocalStack
 
 ### Setup
 
-To deploy to the localstack docker compose service, you need the following tools:
+To deploy to the LocalStack docker compose service, you need the following tools:
 
 - terraform [Link to install instructions](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 - tflocal [link to install instructions](https://github.com/localstack/terraform-local)
@@ -97,13 +97,22 @@ And you need the following entries in your hosts file.
 127.0.0.1 supabase.local
 ```
 
+You also need a LocalStack Pro license to start the [Amazon ECS](https://aws.amazon.com/de/ecs/) services on LocalStack.
+You can obtain an educational license, which enables to use Pro features, here: [Free LocalStack Educational License](https://localstack.cloud/educational-license/).
+Then run
+```shell
+cp .env.example .env
+```
+and set the LOCALSTACK_API_KEY variable to your localstack api key.
+
 Then download the providers used by terraform: `tflocal init`
 
 ### Deploy
 
-1. Start the localstack container: `docker compose up -d`
+1. Start the LocalStack container: `docker compose up -d`
 2. Refresh the terraform state: `tflocal refresh`
-3. Apply the changes: `tflocal apply --auto-approve`
+3. Build all images needed: `docker compose --profile local-run build`
+4. Apply the changes: `tflocal apply --auto-approve`
 
 Then, supabase should be reachable under [http://localhost:3000](http://localhost:3000)
 sce-app is reachable under [http://localhost:8080](http://localhost:8080)
@@ -112,4 +121,55 @@ sce-app is reachable under [http://localhost:8080](http://localhost:8080)
 
 1. Destroy the resources of terraform: `tflocal destroy --auto-approve`
 2. Shut down the containers: `docker compose -f supabase/app/docker-compose.yml down`
-3. Shut down localstack: `docker compose down`
+3. Shut down LocalStack: `docker compose down`
+
+## Documentation
+
+To keep the documentation simple and avoid the "too long; didn't read" problem, the services follow
+best coding practices for the technologies used.
+
+**The documentation and the deployment steps above were only tested on Ubuntu 22.04, MacOS on Apple Silicon and Windows
+10
+with WSL 2. If you use another Setup you may encounter problems with the docker networking or with line endings on
+Windows.**
+
+In the top level directory there is the [docker-compose.yml](docker-compose.yml) which describes the contexts, arguments and image URI
+to build the services. It also allows to build all services with the command `docker compose --profile local-run build`.
+The [docker-compose.yml](docker-compose.yml) also contains the volumes, environment variables and network configuration to run the services.
+With the ports directive the user knows under which port the service will be available.
+
+The dockerfiles [app/Dockerfile](app/Dockerfile), [supabase/Dockerfile](supabase/Dockerfile)
+and [mail-function/Dockerfile](mail-function/Dockerfile)
+self contain all their build steps. There is no need to install npm packages or execute a build step before building the
+image.
+The Dockerfiles also declare their environment variables which allow to configure the image, their ports, their
+entrypoints and
+the default command.
+
+The javascript based services have a
+package.json ([app/package.json](app/package.json), [mail-function](mail-function/package.json))
+which contains all the scripts that are needed to develop and run the applications.
+In the [app](app) service we use typescript to document the internal interfaces between the different components.
+
+### TerraForm
+
+TerraForm is a rather special tool for devops. Because of that the documentation for our TerraForm modules is more
+detailed. TerraForm is used that we have an executable documentation how the services are deployed to LocalStack
+with more possibilities to structure the code than bash scripts.
+The main.tf file in each module describes the desired state of the deployment unit in a declarative way. When a
+TerraForm module is applied,
+TerraForm then checks which parts already exists and which commands it has to execute to get from the current state to
+the desired state.
+
+This application consist of 4 TerraForm modules.
+
+The top level module prepares the variables like the jwt_anon_key (the [JWT](https://jwt.io/ "JSON Web Token") for the
+anonymous role of supabase) which
+are shared between the sub modules. These shared variables are generated in [locals.tf](locals.tf).
+As input it receives the versions of the images in should deploy with [variables.tf](variables.tf).
+Then it calls the other submodules in [main.tf](main.tf). After the module is applied, TerraForm prints the variables
+defined in [outputs.tf](outputs.tf) to the console. TerraForm allows to use resources implemented by external modules.
+These modules and how they are configured is defined in [provider.tf](provider.tf).
+The other modules [supabase/main.tf](supabase/main.tf), [app/main.tf](app/main.tf)
+and [mail-function/main.tf](mail-function/main.tf)
+deploy their image to LocalStack.
