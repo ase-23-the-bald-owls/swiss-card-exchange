@@ -173,3 +173,30 @@ These modules and how they are configured is defined in [provider.tf](provider.t
 The other modules [supabase/main.tf](supabase/main.tf), [app/main.tf](app/main.tf)
 and [mail-function/main.tf](mail-function/main.tf)
 deploy their image to LocalStack.
+
+## Continuous Integration and Deployment
+
+CI and CD is implemented with github actions. The workflows are defined in [.github/workflows](.github/workflows).  
+
+[ci.yml](.github/workflows/ci.yml) lints all javascript services, lints and validates TerraForm and checks that
+the generated types in [database.types.ts](app/src/lib/database.types.ts) are in sync with the schema and thus
+with the api. Then it executes the [cypress.io](https://www.cypress.io/) component and e2e tests. You find
+the e2e tests in [app/cypress/e2e](app/cypress/e2e). And at the end a [sonarcloud](https://sonarcloud.io/project/overview?id=ase-23-the-bald-owls_swiss-card-exchange) scan
+is performed to check the coverage, code duplications and security issues. Videos and screenshots of the test run
+can be seen as artifacts of the [job run](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/runs/4907980612) at the bottom of the summary.  
+
+[cd.yml](.github/workflows/cd.yml) executes the deployment to LocalStack and then runs the e2e tests against
+the LocalStack deployment to check if something broke in the production build.
+For that it needs to build the [images](https://github.com/orgs/ase-23-the-bald-owls/packages?repo_name=swiss-card-exchange) with the [build-images.yml](.github/workflows/build-images.yml) workflow.
+The nightly builds are build from the latest commit on the main branch and also provide images for the arm64 CPU architecture.
+
+[development-setup.yml](.github/workflows/development-setup.yml) also executes productive builds of the images,
+but here they are deployed with docker compose and not with LocalStack to check whether the built images ore ok,
+but we have an error in the LocalStack deployment.
+
+If you fork this repository, you need to provide the following secrets for the workflows to run:
+* SONAR_TOKEN: the token of the project on sonarcloud
+* GHCR_USER: The user with which you want to push the images to the ghcr.io container registry. secrets.GITHUB_TOKEN did not work,
+so we made a personal access token. This is the user from which the token is generated.
+* GHCR_TOKEN: The personal access token to push to the registry.
+* LOCALSTACK_API_KEY
