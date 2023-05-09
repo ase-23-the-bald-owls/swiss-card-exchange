@@ -101,11 +101,7 @@ export default function Backend({ products, pagination, code }: HomeProps) {
                     </Popover>
                   </Td>
                   <Td>
-                    <TableButton
-                      onEdit={() => null}
-                      onDelete={() => null}
-                      prod={product}
-                    />
+                    <TableButton product={product} />
                   </Td>
                 </Tr>
               ))}
