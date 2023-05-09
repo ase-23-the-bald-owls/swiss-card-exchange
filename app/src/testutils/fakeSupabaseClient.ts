@@ -16,7 +16,8 @@ export function createFakeSupabaseClient(
     auth: {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      onAuthStateChange: function () {
+      onAuthStateChange() {
+        // noinspection JSUnusedGlobalSymbols
         return {
           data: {
             subscription: {
@@ -27,7 +28,7 @@ export function createFakeSupabaseClient(
       },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      getSession: async function () {
+      async getSession() {
         return {
           data: {
             session: initialSession,
