@@ -133,7 +133,7 @@ export function addProductInfo(product: Product) {
 
   defaultStore.set(itemToUpdate, {
     ...existingItem,
-    product: product,
+    product,
   });
 }
 
@@ -150,7 +150,7 @@ export function removeAllProducts(productToRemove: ProductWithId) {
 }
 
 function createItemLineFor(product: ProductWithId, numberOfProducts = 1) {
-  const itemLine = atom<ItemLine>({ product, numberOfProducts: numberOfProducts });
+  const itemLine = atom<ItemLine>({ product, numberOfProducts });
   return atom<ItemLine, [newItem: ItemLine], void>(
     (get) => {
       return get(itemLine);
