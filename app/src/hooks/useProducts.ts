@@ -10,7 +10,7 @@ export function useProducts() {
 
   const products = useQuery({
     queryKey: productsQueryKey,
-    queryFn: async () => await supabase.from('products').select('*'),
+    queryFn: () => supabase.from('products').select('*'),
   });
 
   async function createProduct(product: ProductWithoutId) {
