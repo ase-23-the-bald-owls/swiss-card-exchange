@@ -1,8 +1,6 @@
 // noinspection ES6PreferShortImport
 import { HomeRoute, ProductDetailsRoute } from '../../src/utils/routes';
 
-export {}; // Next.js requires --isolatedModules in tsconfig to be true. Feel free to remove this if you have an import
-
 describe('the product details', () => {
   it('can be accessed from the home page', () => {
     cy.visitAndWaitFor(HomeRoute, 'index');
