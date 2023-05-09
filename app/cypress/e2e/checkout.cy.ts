@@ -169,7 +169,7 @@ describe('the checkout process', () => {
         .filter(([key]) => 'email' !== key)
         .forEach(([, value]) => {
           cy.get('.chakra-card__body')
-            .filter((key, element) => element.innerText.indexOf(value) !== -1)
+            .filter((_, element) => element.innerText.indexOf(value) !== -1)
             .should('have.length', 2);
         });
       Object.entries(billingAddress).forEach(([, value]) => {
@@ -215,7 +215,7 @@ describe('the checkout process', () => {
           .filter(([key]) => 'email' !== key)
           .forEach(([, value]) => {
             cy.get('.chakra-card__body')
-              .filter((key, element) => element.innerText.indexOf(value) !== -1)
+              .filter((_, element) => element.innerText.indexOf(value) !== -1)
               .should('have.length', 2);
           });
         Object.entries(billingAddress).forEach(([, value]) => {
