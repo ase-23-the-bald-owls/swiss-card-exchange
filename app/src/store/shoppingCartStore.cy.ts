@@ -176,7 +176,7 @@ describe('A shoppingCart', () => {
     reloadFromStorage();
     const allItems = wrap(getAllItemLines).value;
     expect(allItems).to.have.length(1);
-    const expectedLineItem = JSON.stringify({ product: product, numberOfProducts: 2 });
+    const expectedLineItem = JSON.stringify({ product, numberOfProducts: 2 });
     expect(JSON.stringify(wrap(allItems[0]).value)).eq(expectedLineItem);
   });
 
