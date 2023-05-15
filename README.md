@@ -57,6 +57,15 @@ Because it would be difficult to send emails to real mailboxes and the deploymen
 the mail-function sends the emails to [MailHog](https://github.com/mailhog/MailHog). The deployment of
 MailHog is defined in the top level [docker-compose.yml](docker-compose.yml) under the service mail.
 
+## Docker
+
+Our setup heavily relies on docker. If you use a linux distro, make sure docker is installed according to this
+guideline of docker inc: <https://docs.docker.com/engine/install/ubuntu/>.\
+Maybe some features used in the Dockerfiles are not available when your docker daemon does not
+use buildkit to build the containers.\
+You need buildkit to build the docker images. If your docker cli does not use buildkit by default,
+enable it following the guide here: <https://docs.docker.com/engine/reference/commandline/dockerd/#feature-options>.
+
 ## Local development
 
 For local development, the local development environment with the supabase-cli is recommended.
