@@ -23,3 +23,5 @@ When all of the mentioned boxes are checked, the feature or bug branch was then 
 A visual representation of our entire git graph can be found [here](/docs/components/):
 
 ## Pull Requests
+If one branch was ready to be merged, a mandatory Pull Request was necessary because the main branch was blocked initially to avoid any unfinished changes in the main branch. Also, if one of us created the Pull Request, the other author had to approve it before merging. Smaller issues were directly commented or improved with the suggesion feature from GitHub. Otherwise, a comment was made to rewrite the specific parts of the code before making an approval. 
+Also, whenever possible, we merged and rebased our main branch in order to provide a cleaner history. All of the project **Pull Requests** can be found [here](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/pulls?q=is%3Apr+is%3Aclosed)
