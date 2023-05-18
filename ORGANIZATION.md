@@ -26,7 +26,7 @@ As for the versioning of our repository, the group created feature and bug branc
 - SonarQube reports no issues
 
 When all of the mentioned boxes are checked, the feature or bug branch was then merged through a **Pull Request** into the main branch. The general reasoning for this was to prevent any low quality code or generally untested code in production. No tags or similar features were used as the group was small enough to keep good track of the code versioning.
-A visual representation of our entire git graph can be found [here](/docs/components/):
+A visual representation of our entire git graph can be found [here](/docs/components/git-graph):
 
 ## Pull Requests
 If one branch was ready to be merged, a mandatory Pull Request was necessary because the main branch was blocked initially to avoid any unfinished changes in the main branch. Also, if one of the two group members created the Pull Request, the other author had to approve it before merging. Smaller issues were directly commented on or improved with the suggestion feature from GitHub. Otherwise, a comment was made to rewrite the specific parts of the code before making an approval. 
