@@ -4,6 +4,9 @@ This is a student project developed by @BacLuc and @Off3line.
 The goal of the courses project is to create a cloud native e-commerce application.  
 [Course page of Advanced Software Engineering @UZH](https://www.ifi.uzh.ch/en/seal/teaching/courses/ase.html)
 
+# Project Documentation
+   A markdown file with the documentation about the organization can be found [here](/ORGANIZATION.md)
+
 ## Github Badges:
 
 [![CI](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/ci.yml/badge.svg)](https://github.com/ase-23-the-bald-owls/swiss-card-exchange/actions/workflows/ci.yml)
